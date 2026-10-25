@@ -427,3 +427,5 @@ footer .legal { border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; 
 .perks div { background: var(--bg); border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 12px; }
 .perks .ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-size: 22px; flex-shrink: 0; }
 .perks b { font-size: 16px; }
+/* 表单防机器人的隐藏字段 */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

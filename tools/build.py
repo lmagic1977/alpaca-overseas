@@ -25,7 +25,7 @@ def img(name, alt='', big=False, eager=False):
         src = f'src="/img/{name}.jpg" srcset="/img/{name}-s.jpg 800w, /img/{name}.jpg 1800w" sizes="100vw"'
     else:
         src = f'src="/img/{name}-s.jpg"'
-    return f'<div class="ph"><img {src} alt="{alt}" {attrs} decoding="async" onerror="this.remove()"></div>'
+    return f'<div class="ph"><img {src} alt="{alt}" {attrs} decoding="async"></div>'
 
 
 TOP = [('/us', '美国'), ('/nz', '新西兰'), ('/sg', '新加坡'), ('/mx', '墨西哥')]  # 顶部菜单只放四个国家
@@ -505,6 +505,7 @@ contact_body = f'''{banner('airport2', '免费咨询', '免费咨询', '留个�
       </label>
     </div>
     <label class="f" for="f-msg">简单介绍一下<textarea id="f-msg" name="msg" placeholder="例如：厨师 8 年，想去新加坡工作，想知道能办什么准证。"></textarea></label>
+    <label class="hp" aria-hidden="true">请勿填写<input id="f-site" name="website" tabindex="-1" autocomplete="off"></label>
     <p class="err" id="f-err" hidden>请填写称呼和联系方式，顾问才能联系到你。</p>
     <button class="btn green" type="submit" style="justify-self:start">{ic('send')}提交预约</button>
     <p class="fine">提交即表示你同意我们为联系你而使用以上信息，资料不会提供给第三方。</p>
