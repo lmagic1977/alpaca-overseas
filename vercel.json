@@ -1,1 +1,9 @@
-{ "cleanUrls": true, "regions": ["hkg1"] }
+{
+  "cleanUrls": true,
+  "regions": ["hkg1"],
+  "buildCommand": "node tools/fetch-assets.mjs",
+  "headers": [
+    { "source": "/img/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/vendor/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+  ]
+}
