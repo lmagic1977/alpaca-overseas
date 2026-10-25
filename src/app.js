@@ -4,7 +4,10 @@ var sgd = function (n) { return 'S$' + Math.round(n).toLocaleString('en-US'); };
 // 行业 → 配图
 var IND_PIC = { '餐饮': 'job-chef', '酒店': 'job-hotel', '建筑': 'job-build', '司机': 'job-driver', '美业': 'job-salon', '工厂': 'job-factory' };
 var indPic = function (ind) { var k = Object.keys(IND_PIC).filter(function (x) { return ind.indexOf(x) === 0; })[0]; return '/img/' + (IND_PIC[k] || 'sg-bay') + '-s.jpg'; };
-var ph = function (src, alt) { return '<span class="ph"><img src="' + src + '" alt="' + esc(alt || '') + '" loading="lazy" decoding="async" onerror="this.remove()"></span>'; };
+var ph = function (src, alt) { return '<span class="ph"><img src="' + src + '" alt="' + esc(alt || '') + '" loading="lazy" decoding="async"></span>'; };
+// 图片加载失败就移除，露出底色（不用 onerror 属性，安全策略禁止内联脚本）
+document.addEventListener('error', function (e) { if (e.target.tagName === 'IMG' && e.target.closest('.ph')) e.target.remove(); }, true);
+[].forEach.call(document.querySelectorAll('.ph img'), function (img) { if (img.complete && !img.naturalWidth) img.remove(); });
 var jobLink = function (j) {
   return '/contact?service=' + encodeURIComponent('新加坡工作签证') + '&msg=' + encodeURIComponent('【咨询职位 ' + j.id + '】' + j.t + (j.co ? '（' + j.co + '）' : '') + '，' + (j.pay || '') + '。');
 };
@@ -71,7 +74,7 @@ var jobLink = function (j) {
   rail.innerHTML = picks.map(function (j) {
     var meta = [j.ind.split('/')[0]].concat(j.p.slice(0, 2));
     if (j.hs) meta.push('包住');
-    return '<a class="jcard" href="' + jobLink(j) + '"><span class="ph">' + '<img src="' + indPic(j.ind) + '" alt="" loading="lazy" decoding="async" onerror="this.remove()">' +
+    return '<a class="jcard" href="' + jobLink(j) + '"><span class="ph">' + '<img src="' + indPic(j.ind) + '" alt="" loading="lazy" decoding="async">' +
       '<span class="pay">' + sgd(j.b) + '<small> 起</small></span></span><span class="body"><b>' + esc(j.t) + '</b><span class="meta">' +
       meta.map(function (m) { return '<span>' + esc(m) + '</span>'; }).join('') + '</span></span></a>';
   }).join('');
@@ -90,6 +93,7 @@ var jobLink = function (j) {
     sel.value = v;
   }
   if (qs.get('msg')) $('f-msg').value = qs.get('msg');
+  var started = Date.now();
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = $('f-name').value.trim(), contact = $('f-contact').value.trim(), err = $('f-err');
@@ -102,7 +106,7 @@ var jobLink = function (j) {
       $('f-ok').hidden = false;
       btn.disabled = false;
     };
-    var payload = { name: name, contact: contact, service: sel.value, when: $('f-when').value, msg: $('f-msg').value.trim() };
+    var payload = { name: name, contact: contact, service: sel.value, when: $('f-when').value, msg: $('f-msg').value.trim(), website: $('f-site') ? $('f-site').value : '', t: Date.now() - started };
     var endpoint = document.querySelector('meta[name="lead-endpoint"]');
     if (!endpoint || !window.fetch) { done(); return; }
     fetch(endpoint.content, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
@@ -116,6 +120,7 @@ var jobLink = function (j) {
   var $ = function (id) { return document.getElementById(id); };
   var form = $('sgc');
   if (!form) return;
+  form.addEventListener('submit', function (e) { e.preventDefault(); });
   var radio = function (name) { var el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : 'u'; };
   // 23 岁为起点、45 岁封顶，中间按线性估算
   var floor = function (age, lo, hi) {
