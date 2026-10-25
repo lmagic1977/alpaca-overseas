@@ -6,7 +6,7 @@
 <meta name="lead-endpoint" content="/api/lead">
 <title>羊驼出海 · 要出国找羊驼</title>
 <link rel="icon" type="image/svg+xml" href="/logo.svg">
-<meta name="description" content="要出国找羊驼。羊驼出海：美国签证、美国移民、新西兰工作签证、新加坡工作签证、墨西哥工签与绿卡一站式咨询办理。">
+<meta name="description" content="要出国找羊驼。羊驼出海：美国移民签证、新西兰工作签证、新加坡工作签证、墨西哥工签与绿卡一站式咨询办理。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Nunito:wght@600;700;800&display=swap">
@@ -91,7 +91,7 @@ p { margin: 0; }
 
 /* Route strip */
 .route { background: var(--deep); border-block: 1px solid var(--gold-soft); }
-.route .wrap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.route .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .route a { padding: 22px 18px; text-decoration: none; border-left: 1px solid var(--gold-faint); display: grid; gap: 4px; transition: background .2s; }
 .route a:last-child { border-right: 1px solid var(--gold-faint); }
 .route a:hover { background: var(--gold-faint); }
@@ -140,6 +140,7 @@ td { color: var(--muted); }
 td:first-child { color: var(--fg); font-family: var(--display); font-weight: 600; white-space: nowrap; letter-spacing: .04em; font-size: 15px; }
 td .tag { font-family: var(--mono); font-style: italic; font-size: 14px; color: var(--gold); display: block; font-weight: 400; letter-spacing: 0; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.svc-main .sub-h { font-size: 18px; font-weight: 700; margin-bottom: -16px; color: var(--fg); }
 .two h3 { font-size: 15px; letter-spacing: .2em; color: var(--gold); margin-bottom: 14px; font-weight: 400; }
 .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .ticks li { padding-left: 22px; position: relative; font-size: 15px; }
@@ -425,8 +426,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
       <span><b>羊驼出海</b><small>Alpaca Overseas</small></span>
     </a>
     <nav class="nav" aria-label="主导航">
-      <a href="#us-visa">美国签证</a>
-      <a href="#us-immigration">美国移民</a>
+      <a href="#us">美国移民签证</a>
       <a href="#nz">新西兰工签</a>
       <a href="#sg">新加坡工签</a>
       <a href="#sg-jobs">新加坡职位</a>
@@ -444,7 +444,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
       <div>
         <span class="eyebrow">签证 · 工签 · 移民，一对一帮你办</span>
         <h1><span class="nw">要出国</span><span class="nw">找<em>羊驼</em></span></h1>
-        <p class="lede">美国签证、美国绿卡、新西兰和新加坡工签、墨西哥身份，我们都能办。不懂的地方说人话讲清楚，费用提前写明白，进度随时能问。</p>
+        <p class="lede">美国签证和绿卡、新西兰和新加坡工签、墨西哥身份，我们都能办。不懂的地方说人话讲清楚，费用提前写明白，进度随时能问。</p>
         <div class="actions">
           <a class="btn primary" href="#contact">免费问一问</a>
           <a class="btn ghost" href="#sg-jobs">查询新加坡职位</a>
@@ -460,8 +460,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
 
   <nav class="route" aria-label="服务板块">
     <div class="wrap">
-      <a href="#us-visa"><span class="code">USA · 签证</span><span class="name">美国签证</span></a>
-      <a href="#us-immigration"><span class="code">USA · 绿卡</span><span class="name">美国移民</span></a>
+      <a href="#us"><span class="code">USA · 签证 + 绿卡</span><span class="name">美国移民签证</span></a>
       <a href="#nz"><span class="code">NZ · 工签</span><span class="name">新西兰工作签证</span></a>
       <a href="#sg"><span class="code">SG · 工签</span><span class="name">新加坡工作签证</span></a>
       <a href="#mx"><span class="code">MX · 居留</span><span class="name">墨西哥工签绿卡</span></a>
@@ -485,8 +484,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
           <button type="button" class="chip" id="g-invest" data-goal="invest" aria-pressed="false">投资 / 资产配置</button>
         </div>
         <div class="finder-out">
-          <a class="pick" href="#us-visa" data-goals="visit study work"><span class="k">B1/B2 · F-1 · H-1B</span><b>美国签证</b><span>短期访美、留学或赴美工作</span></a>
-          <a class="pick" href="#us-immigration" data-goals="pr invest work"><span class="k">EB-1A · NIW · EB-5</span><b>美国移民</b><span>人才、投资、亲属等绿卡路径</span></a>
+          <a class="pick" href="#us" data-goals="visit study work pr invest"><span class="k">B1/B2 · F-1 · H-1B · EB-1A · NIW · EB-5</span><b>美国移民签证</b><span>短期访美、留学、工作，或拿美国绿卡</span></a>
           <a class="pick" href="#nz" data-goals="work pr"><span class="k">AEWV · SMC</span><b>新西兰工作签证</b><span>雇主担保工签，可衔接技术移民</span></a>
           <a class="pick" href="#sg" data-goals="work invest"><span class="k">EP · S Pass · EntrePass</span><b>新加坡工作签证</b><span>亚洲金融中心，中文友好</span></a>
           <a class="pick" href="#mx" data-goals="work pr invest"><span class="k">Residente Temporal / Permanente</span><b>墨西哥工签绿卡</b><span>门槛较低，北美布局的跳板</span></a>
@@ -495,17 +493,19 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
     </div>
   </section>
 
-  <!-- 01 美国签证 -->
-  <section class="svc" id="us-visa">
+  <!-- 01 美国移民签证 -->
+  <section class="svc" id="us">
+    <span id="us-visa"></span><span id="us-immigration"></span>
     <div class="wrap">
       <aside class="svc-side">
-        <span class="no">美国 · 非移民</span>
+        <span class="no">美国 · 签证与绿卡</span>
         <div class="flagmark">美国</div>
-        <div class="codes"><span>B1/B2</span><span>F-1</span><span>J-1</span><span>H-1B</span><span>L-1</span><span>O-1</span></div>
+        <div class="codes"><span>B1/B2</span><span>F-1</span><span>H-1B</span><span>L-1</span><span>O-1</span><span>EB-1A</span><span>EB-2 NIW</span><span>EB-5</span><span>EB-1C</span><span>亲属移民</span></div>
       </aside>
       <div class="svc-main">
-        <h2>美国签证</h2>
-        <p class="intro">美国非移民签证看的是"你去做什么、为什么会回来"。我们帮你把出行目的讲清楚，把 DS-160 填准确，再陪你把面签问题过一遍。</p>
+        <h2>美国移民签证</h2>
+        <p class="intro">短期去美国旅游、读书、工作，还是长期拿绿卡留下来，我们都能办。先说说你的情况，我们帮你挑最快、最稳的那条路。</p>
+        <h3 class="sub-h">短期签证：旅游、留学、工作</h3>
         <div class="tbl">
           <table>
             <thead><tr><th>签证类别</th><th>适合谁</th><th>我们重点帮你做的</th></tr></thead>
@@ -518,42 +518,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
             </tbody>
           </table>
         </div>
-        <div class="two">
-          <div>
-            <h3>服务包含</h3>
-            <ul class="ticks">
-              <li>一对一评估签证类型与通过风险</li>
-              <li>DS-160 代填与逐项复核</li>
-              <li>预约面签、缴费与 EVUS 登记指导</li>
-              <li>按真实问法的面签模拟</li>
-            </ul>
-          </div>
-          <div>
-            <h3>常见情况</h3>
-            <ul class="ticks">
-              <li>首次申请、无出境记录</li>
-              <li>曾被 214(b) 拒签，想再试</li>
-              <li>被要求补充审查（221(g)）</li>
-              <li>家庭成员一起申请</li>
-            </ul>
-          </div>
-        </div>
-        <div class="svc-cta"><a class="btn dark" href="#contact" data-service="美国签证">咨询美国签证</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 美国移民 -->
-  <section class="svc" id="us-immigration">
-    <div class="wrap">
-      <aside class="svc-side">
-        <span class="no">美国 · 永久居留</span>
-        <div class="flagmark">美国</div>
-        <div class="codes"><span>EB-1A</span><span>EB-2 NIW</span><span>EB-5</span><span>EB-1C</span><span>F 类亲属</span></div>
-      </aside>
-      <div class="svc-main">
-        <h2>美国移民</h2>
-        <p class="intro">拿美国绿卡有好几条路，差别在于你手里有什么：成就、学历、资金，还是家人。我们先帮你找到最快、最稳的那一条。</p>
+        <h3 class="sub-h">移民绿卡：长期留下来</h3>
         <div class="tbl">
           <table>
             <thead><tr><th>移民路径</th><th>核心条件</th><th>特点</th></tr></thead>
@@ -570,8 +535,9 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
           <div>
             <h3>服务包含</h3>
             <ul class="ticks">
-              <li>背景评估与路径对比（可多条并行）</li>
-              <li>证据链规划、推荐信与申请陈述撰写</li>
+              <li>一对一评估：签证还是绿卡，走哪条路</li>
+              <li>DS-160 代填复核、面签预约与模拟</li>
+              <li>绿卡证据链规划、推荐信与申请陈述撰写</li>
               <li>EB-5 项目尽调与资金来源梳理</li>
               <li>I-140 / I-485 / 领馆面谈全程跟进</li>
             </ul>
@@ -579,14 +545,14 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
           <div>
             <h3>你需要知道</h3>
             <ul class="ticks">
-              <li>中国大陆出生申请人多数类别有排期</li>
+              <li>被 214(b) 拒签过也能再申请，先复盘原因</li>
+              <li>中国大陆出生申请人多数绿卡类别有排期</li>
               <li>移民法律文书由合作的美国执业律师签署递交</li>
               <li>投资金额与政策以 USCIS 最新公告为准</li>
             </ul>
           </div>
         </div>
-        <p class="note">评估阶段即可告诉你排期大致位置，以及哪条路可以提前锁定优先日期。</p>
-        <div class="svc-cta"><a class="btn dark" href="#contact" data-service="美国移民">评估我的绿卡路径</a></div>
+        <div class="svc-cta"><a class="btn dark" href="#contact" data-service="美国移民签证">咨询美国移民签证</a></div>
       </div>
     </div>
   </section>
@@ -928,8 +894,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
         <div class="fgrid">
           <label for="f-service">感兴趣的服务
             <select id="f-service" name="service">
-              <option>美国签证</option>
-              <option>美国移民</option>
+              <option>美国移民签证</option>
               <option>新西兰工作签证</option>
               <option>新加坡工作签证</option>
               <option>墨西哥工签绿卡</option>
@@ -962,7 +927,7 @@ footer .fl > span { font-family: var(--body); letter-spacing: 0; }
         <img src="/logo.svg" alt="" width="30" height="36">
         <span><b>羊驼出海</b><small>Alpaca Overseas</small></span>
       </a>
-      <span>要出国找羊驼 · 美国签证 · 美国移民 · 新西兰工签 · 新加坡工签 · 墨西哥工签绿卡</span>
+      <span>要出国找羊驼 · 美国移民签证 · 新西兰工签 · 新加坡工签 · 墨西哥工签绿卡</span>
     </div>
     <p>免责声明：本站内容仅供参考，不构成法律意见。各国签证与移民政策会调整，以官方最新公布为准。签证与移民申请结果由相关国家政府机构决定。</p>
     <p>© 2026 羊驼出海</p>
