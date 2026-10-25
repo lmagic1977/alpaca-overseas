@@ -47,13 +47,14 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 <meta name="description" content="{desc}">
 <meta name="lead-endpoint" content="/api/lead">
 <meta name="theme-color" content="#11866a">
-<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="羊驼出海首页"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+    <a class="brand" href="/" aria-label="羊驼出海首页"><img class="logo" src="/logo.png" alt="羊驼出海" width="388" height="120"></a>
     <nav class="nav" id="main-nav" aria-label="主导航">{nav}</nav>
   </div>
 </header>
@@ -64,7 +65,7 @@ def page(slug, title, desc, body, scripts=('app.js',)):
   <div class="wrap">
     <div class="cols">
       <div>
-        <a class="brand" href="/"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+        <a class="brand pill" href="/"><img class="logo" src="/logo.png" alt="羊驼出海" width="388" height="120"></a>
         <p class="slogan">要出国找羊驼</p>
       </div>
       <nav aria-label="页脚导航">{''.join(f'<a href="{h}">{t}</a>' for h, t in NAV[1:])}<a href="/contact">免费咨询</a></nav>
@@ -507,7 +508,7 @@ os.makedirs(OUT)
 for name, slug, title, desc, body, scripts in PAGES:
     with open(os.path.join(OUT, name + '.html'), 'w') as f:
         f.write(page(slug, title, desc, body, scripts))
-for src, dst in [('src/styles.css', 'styles.css'), ('src/app.js', 'app.js'), ('src/jobs-data.js', 'jobs-data.js'), ('logo.svg', 'logo.svg')]:
+for src, dst in [('src/styles.css', 'styles.css'), ('src/app.js', 'app.js'), ('src/jobs-data.js', 'jobs-data.js'), ('logo.svg', 'logo.svg'), ('src/brand/logo.png', 'logo.png'), ('src/brand/favicon.png', 'favicon.png'), ('src/brand/favicon.ico', 'favicon.ico'), ('src/brand/apple-touch-icon.png', 'apple-touch-icon.png')]:
     shutil.copy(os.path.join(ROOT, src), os.path.join(OUT, dst))
 json.dump(icons, open(ICON_CACHE, 'w'), ensure_ascii=False, indent=0, sort_keys=True)
 print('built', len(PAGES), 'pages,', len(icons), 'icons')

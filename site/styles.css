@@ -384,3 +384,9 @@ footer .legal { border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; 
   .top .nav a { font-size: 17px; padding: 8px 12px; }
 }
 @media (max-width: 360px) { .top .nav a { font-size: 16px; padding: 7px 9px; } .brand b { display: block; } }
+
+/* 新 Logo（图片自带“羊驼出海”字样） */
+.brand img.logo { width: auto; height: 54px; }
+.brand.pill { display: inline-flex; background: #fff; padding: 8px 14px; border-radius: 14px; }
+.brand.pill img.logo { height: 40px; }
+@media (max-width: 760px) { .brand img.logo { height: 42px; } }
