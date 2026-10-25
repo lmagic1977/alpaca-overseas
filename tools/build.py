@@ -379,32 +379,53 @@ jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '�
 {cta('sg-mbs', '没找到合适的？', '告诉顾问你的工种和期望薪资，有新岗位第一时间通知你。', consult('新加坡工作签证'), '让顾问帮我找')}'''
 
 # ---------------- 墨西哥 ----------------
-mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥工签绿卡', '紧邻美国，门槛友好。工作居留满 4 年，转墨西哥“绿卡”。', ['临时居留', '永久居留', 'CURP', 'RFC'],
-              f'<div class="acts">{btn(consult("墨西哥工签绿卡"), "免费评估", "sun", "messages-square")}</div>')}
+MX_STEPS = [
+    ('file-check', '申请批文', '墨西哥当地合法雇主向移民局递交申请', ['协助准备申请材料', '获得移民局工签批文', '批文同步至中国对应领事馆']),
+    ('stamp', '领馆面签', '前往墨西哥驻华使领馆（北京 / 上海 / 广州）', ['参加官方面谈', '获批后获得入境签证', '签证有效期 180 天']),
+    ('id-card', '入境换卡', '持签证入境墨西哥', ['协助预约移民局', '完成指纹录入', '领取临时居留卡，约 30 天']),
+]
+MX_PLAN = [
+    ('id-card', '第一年', '1 年期临时居留'),
+    ('rotate-ccw', '第二阶段', '续签 3 年期临时居留'),
+    ('house', '第三阶段', '满 4 年申请永久居留（绿卡）'),
+    ('flag', '第四阶段', '永居满 1 年，可申请墨西哥国籍'),
+]
+MX_PAY = [('签约后', 'pen-line'), ('获得工签批文后', 'file-check'), ('获得签证批准后', 'stamp'), ('入境领取居留卡前', 'id-card')]
+MX_PERKS = [('shield-check', '合法合规办理'), ('languages', '全程中文服务'), ('user-check', '一对一顾问跟进'), ('calendar-check', '协助预约和备材料'),
+            ('plane-takeoff', '协助入境换卡'), ('rotate-ccw', '可续签直至永居'), ('globe', '永居后无最低居住要求')]
+
+mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥合法居留项目', '雇主工签起步，1 年临时居留 → 3 年续签 → 永久居留 → 入籍，全程协助办理。', ['全程中文', '一对一顾问', '可续签至永居'],
+              f'<div class="acts">{btn(consult("墨西哥工签绿卡"), "免费评估", "sun", "messages-square")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
 
 <section class="sec"><div class="wrap">
-  {head('拿身份的路线', '三步拿到墨西哥绿卡')}
-  <div class="road">
-    <div><span class="ic">{ic('stamp')}</span><b>办签证</b><span>雇主邀请或经济能力证明，在驻华使领馆办签证</span></div>
-    <div><span class="ic">{ic('id-card')}</span><b>临时居留卡</b><span>入境 30 天内换卡，合法居住和工作</span></div>
-    <div><span class="ic">{ic('house')}</span><b>永久居留</b><span>临时居留满 4 年转永居，不用再续签</span></div>
+  {head('办理流程', '三步拿到墨西哥居留卡')}
+  <div class="flow">
+  {''.join(f"""<div class="flow-card"><div class="flow-top"><span class="ic">{ic(i)}</span><span class="no">第 {n + 1} 步</span></div><h3>{t}</h3><p>{d}</p>{ticks(items)}</div>""" for n, (i, t, d, items) in enumerate(MX_STEPS))}
+  </div>
+</div></section>
+
+<section class="sec tint"><div class="wrap">
+  {head('身份规划', '从临时居留到墨西哥国籍')}
+  <div class="road four">
+  {''.join(f'<div><span class="ic">{ic(i)}</span><b>{t}</b><span>{d}</span></div>' for i, t, d in MX_PLAN)}
+  </div>
+  <div class="chips center"><span>可长期合法居住</span><span>自由出入墨西哥</span><span>无最低居住时间限制</span><span>无强制长期居住要求</span></div>
+  <p class="fine center">入籍以墨西哥政府现行法律及审批结果为准。</p>
+</div></section>
+
+<section class="sec" id="fee"><div class="wrap">
+  {head('服务费用', '一口价，分 4 次付')}
+  <div class="fee">
+    <div class="fee-total"><span>项目总费用</span><b>¥160,000</b><small>人民币，按进度分 4 期支付</small></div>
+    <ol class="fee-steps">
+    {''.join(f'<li><span class="ic">{ic(i)}</span><span class="when">第 {n + 1} 期 · {w}</span><b>¥40,000</b></li>' for n, (w, i) in enumerate(MX_PAY))}
+    </ol>
   </div>
 </div></section>
 
 <section class="sec alt"><div class="wrap">
-  {head('身份类别', '适合你的是哪种')}
-  {vtypes([
-      ('briefcase', '工作临时居留', '雇主邀请', '墨西哥雇主向移民局（INM）提交工作邀请。'),
-      ('wallet', '经济能力临时居留', '存款 / 收入', '不需要雇主，用存款或稳定收入证明申请。'),
-      ('house', '永久居留', '绿卡', '临时居留满 4 年转换，或高收入、高资产直接申请。'),
-      ('receipt', '落地配套', 'CURP · RFC', '身份编码和税号，开户、签约、开公司都要用。'),
-  ])}
-</div></section>
-
-<section class="sec"><div class="wrap">
-  {split('mx-dome', '墨西哥城建筑', '服务包含', '签证、换卡、开公司，一条龙', '',
-         ['判断走雇主邀请还是经济能力路线', '使馆预约、材料翻译和公证认证', '入境换卡，办 CURP 和 RFC', '墨西哥公司注册、银行开户对接'],
-         btn(consult('墨西哥工签绿卡'), '咨询墨西哥身份'))}
+  {head('项目优势', '为什么选这个项目')}
+  <div class="perks">{''.join(f'<div><span class="ic">{ic(i)}</span><b>{t}</b></div>' for i, t in MX_PERKS)}</div>
 </div></section>
 
 <section class="sec tint"><div class="wrap">
@@ -414,10 +435,10 @@ mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥工签绿�
       ('ship', '贸易电商老板', '在墨西哥做贸易、电商、开公司。'),
       ('users', '想要北美身份的家庭', '需要长期稳定居住身份。'),
   ])}
-  <p class="note-box">{ic('info')}<span>经济能力路线的存款和收入标准按墨西哥最低工资倍数计算，每年调整，以当年使领馆要求为准。</span></p>
+  <p class="note-box">{ic('info')}<span>风险提示：申请人须提供真实、完整、合法的申请材料。项目审批权归墨西哥移民局及相关领事机构所有，最终结果以官方审核为准。</span></p>
 </div></section>
 
-{cta('mx-city', '想去墨西哥？先免费评估', '说说你是外派、开公司还是想要身份，顾问帮你选路线。', consult('墨西哥工签绿卡'))}'''
+{cta('mx-city', '想去墨西哥？先免费评估', '说说你的情况，顾问帮你看能不能办、多久能办好。', consult('墨西哥工签绿卡'))}'''
 
 # ---------------- 关于 ----------------
 FAQ = [

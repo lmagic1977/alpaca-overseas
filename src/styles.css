@@ -390,3 +390,40 @@ footer .legal { border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; 
 .brand.pill { display: inline-flex; background: #fff; padding: 8px 14px; border-radius: 14px; }
 .brand.pill img.logo { height: 40px; }
 @media (max-width: 760px) { .brand img.logo { height: 42px; } }
+
+/* 墨西哥项目：流程卡、四段时间轴、费用、优势 */
+.flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.flow-card { background: #fff; border-radius: var(--r); padding: 24px; display: grid; gap: 10px; align-content: start; box-shadow: var(--shadow); border-top: 6px solid var(--green); }
+.flow-card:nth-child(2) { border-top-color: var(--sun); }
+.flow-card:nth-child(3) { border-top-color: var(--coral); }
+.flow-top { display: flex; align-items: center; justify-content: space-between; }
+.flow-top .ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--tint); color: var(--green); font-size: 26px; }
+.flow-top .no { font-weight: 900; color: var(--dim); }
+.flow-card h3 { font-size: 22px; }
+.flow-card p { color: var(--muted); font-size: 15px; }
+.flow-card .ticks li { font-size: 15px; }
+@media (max-width: 860px) { .flow { grid-template-columns: 1fr; } }
+.road.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.road.four::before { left: 12%; right: 12%; }
+.road.four div:last-child .ic { background: var(--coral); border-color: var(--coral); color: #fff; }
+.road.four div:nth-child(3) .ic { background: var(--sun); border-color: var(--sun); color: #2a2205; }
+@media (max-width: 760px) { .road.four { grid-template-columns: 1fr; gap: 24px; } .road.four::before { left: 33px; right: auto; top: 0; bottom: 0; width: 4px; height: auto; background: repeating-linear-gradient(180deg, var(--green) 0 14px, transparent 14px 24px); } .road.four div { grid-template-columns: 68px 1fr; justify-items: start; text-align: left; column-gap: 16px; padding: 0; } .road.four .ic { grid-row: span 2; } }
+.chips.center { justify-content: center; margin-top: 32px; }
+.chips.center span { font-size: 14px; padding: 6px 14px; background: #fff; }
+.fine.center { text-align: center; margin-top: 12px; }
+.fee { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px; align-items: stretch; }
+.fee-total { background: var(--green); color: #fff; border-radius: var(--r); padding: 30px; display: grid; align-content: center; gap: 6px; box-shadow: var(--shadow); }
+.fee-total span { font-weight: 700; color: #cdeee2; }
+.fee-total b { font-size: clamp(40px, 5vw, 56px); line-height: 1.1; color: var(--sun); font-variant-numeric: tabular-nums; }
+.fee-total small { color: #cdeee2; }
+.fee-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.fee-steps li { background: #fff; border-radius: var(--r); padding: 18px 20px; display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: center; box-shadow: var(--shadow); }
+.fee-steps .ic { grid-row: span 2; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--tint); color: var(--green); font-size: 22px; }
+.fee-steps .when { font-size: 14px; color: var(--muted); }
+.fee-steps b { font-size: 24px; color: var(--green); font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) { .fee { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .fee-steps { grid-template-columns: 1fr; } }
+.perks { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.perks div { background: var(--bg); border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 12px; }
+.perks .ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-size: 22px; flex-shrink: 0; }
+.perks b { font-size: 16px; }
