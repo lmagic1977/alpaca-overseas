@@ -274,10 +274,60 @@ us_body = f'''{banner('us-gg', '美国移民签证', '美国移民签证', '短�
 {cta('us-nyc', '想去美国？先免费评估', '告诉我们你的学历、工作和目标，顾问帮你挑路径。', consult('美国移民签证'))}'''
 
 # ---------------- 新西兰 ----------------
-nz_body = f'''{banner('nz-lake', '新西兰工作签证', '新西兰工作签证', '先拿认证雇主 offer，再办工签；做满条件，衔接居留。', ['AEWV', '绿名单', '技术移民 SMC', '打工度假'],
-              f'<div class="acts">{btn(consult("新西兰工作签证"), "免费评估", "sun", "messages-square")}</div>')}
+NZ_REQ = [
+    ('graduation-cap', '学历', '中专及以上', '中专、大专、本科等学历均可报名。'),
+    ('briefcase', '工作经验', '2 年以上', '相关工作经验满 2 年。'),
+    ('receipt', '经验证明', '社保或工资流水', '必须提供社保缴纳记录或工资流水。'),
+    ('languages', '英语', 'PTE 29 分', 'PTE 成绩 29 分及以上。'),
+]
+NZ_MATCH = [
+    ('wrench', '中专、大专', '协助匹配与所学专业相符的工作。'),
+    ('graduation-cap', '本科＋学位证', '公司负责协助匹配任何工种的工作。'),
+    ('award', '国内技能培训', '本科可协助在国内培训技能，到新西兰再就业。'),
+]
+NZ_STEPS = [
+    ('search', '条件评估'), ('user-check', '岗位匹配'), ('messages-square', '雇主面试'),
+    ('pen-line', '签订雇佣合同'), ('send', '递交签证'), ('plane-takeoff', '获批赴新'),
+]
+NZ_PAY = [('报名', 'pen-line', '¥10,000'), ('面试通过并确认雇佣合同后', 'file-check', '¥40,000'), ('签证获批后', 'stamp', '¥20,000')]
+
+nz_body = f'''{banner('nz-lake', '新西兰工作签证', '新西兰工作项目开放报名', '有技术、有工作经验，想去新西兰工作？不限厨师，多行业岗位可咨询。', ['AEWV', '多行业岗位', '持牌律师服务'],
+              f'<div class="acts">{btn(consult("新西兰工作签证"), "免费评估", "sun", "messages-square")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
+
+<section class="sec" id="job"><div class="wrap">
+  {head('申请条件', '这四项都要满足', '具体技能、英语和资质要求因岗位而异，根据你的经历与雇主实际需求匹配。')}
+  {vtypes(NZ_REQ)}
+</div></section>
+
+<section class="sec alt"><div class="wrap">
+  {head('岗位匹配', '按学历匹配工作')}
+  {icards(NZ_MATCH)}
+  <p class="fine center">工资、工时及食宿待遇，以具体岗位和正式雇佣合同为准。</p>
+</div></section>
 
 <section class="sec"><div class="wrap">
+  {head('办理流程', '6 步，去新西兰')}
+  <ol class="steps6">{''.join(f'<li><span class="ic">{ic(i)}</span><span class="no">{n + 1}</span><b>{t}</b></li>' for n, (i, t) in enumerate(NZ_STEPS))}</ol>
+</div></section>
+
+<section class="sec tint" id="fee"><div class="wrap">
+  {head('服务费用', '总费用 7 万，分 3 期付')}
+  <div class="fee">
+    <div class="fee-total"><span>服务总费用</span><b>¥70,000</b><small>人民币，已包含持牌律师服务费</small></div>
+    <ol class="fee-steps one">
+    {''.join(f'<li><span class="ic">{ic(i)}</span><span class="when">第 {n + 1} 期 · {w}</span><b>{a}</b></li>' for n, (w, i, a) in enumerate(NZ_PAY))}
+    </ol>
+  </div>
+  <p class="note-box">{ic('info')}<span>签证申请费、机票、体检、公证、翻译及保险等第三方费用另计。退款按协议约定，不承诺包签。</span></p>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  {split('nz-town', '新西兰小镇街景', '先评估，再办理', '有意向请发送这些信息', '顾问看完先帮你评估，符合条件再办理。',
+         ['年龄', '职业和工作年限', '学历', '英语水平（PTE 成绩）', '能否提供社保或工资流水'],
+         btn(consult('新西兰工作签证'), '发给顾问评估'), rev=True)}
+</div></section>
+
+<section class="sec alt"><div class="wrap">
   {head('签证类别', '四种方式去新西兰')}
   {vtypes([
       ('briefcase', 'AEWV', '认证雇主工签', '主流工签。雇主先认证、做岗位核查。'),
@@ -287,24 +337,7 @@ nz_body = f'''{banner('nz-lake', '新西兰工作签证', '新西兰工作签证
   ])}
 </div></section>
 
-<section class="sec alt"><div class="wrap">
-  {head('热门岗位方向', '这些工种好找工作')}
-  {icards([
-      ('chef-hat', '厨师', '中餐、西餐厨师长期缺人。'),
-      ('wrench', '技术工种', '汽修、电工、焊工、水管工。'),
-      ('stethoscope', '护理养老', '护士、护工、养老护理。'),
-      ('code', 'IT 与工程', '软件开发、各类工程师。'),
-  ])}
-</div></section>
-
-<section class="sec"><div class="wrap">
-  {split('nz-town', '新西兰小镇街景', '服务包含', '从找雇主到落地', '',
-         ['岗位匹配，对接认证雇主', '英文简历、面试辅导', '学历认证（NZQA）、体检、无犯罪证明', '递签、补件跟进，配偶子女随行规划'],
-         btn(consult('新西兰工作签证'), '咨询新西兰工签'), rev=True)}
-  <p class="note-box">{ic('shield-check')}<span>我们不向求职者收“买工作”的钱。新西兰移民局明确规定，雇主不得向员工收招聘费。</span></p>
-</div></section>
-
-{cta('nz-hills', '想去新西兰？先免费评估', '说说你的工种和英语水平，顾问帮你看机会。', consult('新西兰工作签证'))}'''
+{cta('nz-hills', '想出国，找羊驼！', '发送年龄＋职业＋工作年限＋学历＋英语水平，顾问先帮你评估。', consult('新西兰工作签证'))}'''
 
 # ---------------- 新加坡 ----------------
 sg_check = open(os.path.join(ROOT, 'tools', 'sg-check.html')).read()
@@ -516,7 +549,7 @@ contact_body = f'''{banner('airport2', '免费咨询', '免费咨询', '留个�
 PAGES = [
     ('index', '/', '首页', '羊驼出海：美国移民签证、新西兰工作签证、新加坡工作签证、墨西哥工签绿卡。要出国找羊驼。', index_body, ('jobs-data.js', 'app.js')),
     ('us', '/us', '美国移民签证', '美国旅游、留学、工作签证与 EB-1A、NIW、EB-5 绿卡规划。', us_body, ('app.js',)),
-    ('nz', '/nz', '新西兰工作签证', '新西兰认证雇主工签 AEWV、绿名单、技术移民。', nz_body, ('app.js',)),
+    ('nz', '/nz', '新西兰工作签证', '新西兰工作项目开放报名：中专以上学历、2 年以上工作经验、PTE 29 分，多行业岗位匹配。', nz_body, ('app.js',)),
     ('sg', '/sg', '新加坡工作签证', '新加坡 EP、S Pass、Work Permit 申请与 EP 资格自测。', sg_body, ('jobs-data.js', 'app.js')),
     ('jobs', '/jobs', '新加坡职位查询', '新加坡在招岗位查询：餐饮、酒店、建筑、司机、美业、工厂。', jobs_body, ('jobs-data.js', 'app.js')),
     ('mx', '/mx', '墨西哥工签绿卡', '墨西哥工作临时居留、经济能力居留、永久居留。', mx_body, ('app.js',)),
