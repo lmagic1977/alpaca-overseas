@@ -28,12 +28,14 @@ def img(name, alt='', big=False, eager=False):
     return f'<div class="ph"><img {src} alt="{alt}" {attrs} decoding="async" onerror="this.remove()"></div>'
 
 
+TOP = [('/us', '美国'), ('/nz', '新西兰'), ('/sg', '新加坡'), ('/mx', '墨西哥')]  # 顶部菜单只放四个国家
 NAV = [('/', '首页'), ('/us', '美国移民签证'), ('/nz', '新西兰工签'), ('/sg', '新加坡工签'),
        ('/jobs', '新加坡职位'), ('/mx', '墨西哥工签绿卡'), ('/about', '关于我们')]
 
 
 def page(slug, title, desc, body, scripts=('app.js',)):
-    nav = ''.join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if h == slug else ""}>{t}</a>' for h, t in NAV)
+    here = '/sg' if slug == '/jobs' else slug  # 职位查询归在新加坡下
+    nav = ''.join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if h == here else ""}>{t}</a>' for h, t in TOP)
     js = ''.join(f'<script src="/{s}"></script>' for s in scripts)
     full_title = '羊驼出海 · 要出国找羊驼' if slug == '/' else f'{title} · 羊驼出海'
     return f'''<!doctype html>
@@ -52,8 +54,7 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="羊驼出海首页"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
-    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav">{ic('menu')}菜单</button>
-    <nav class="nav" id="main-nav" aria-label="主导航">{nav}<a class="nav-cta" href="/contact">免费咨询</a></nav>
+    <nav class="nav" id="main-nav" aria-label="主导航">{nav}</nav>
   </div>
 </header>
 <main>
