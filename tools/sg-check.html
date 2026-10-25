@@ -1,0 +1,72 @@
+      <div class="sgc-grid">
+        <form class="sgc-form" id="sgc" novalidate onsubmit="return false">
+          <div class="fgrid">
+            <label class="f" for="sg-age">年龄<input id="sg-age" type="number" inputmode="numeric" min="18" max="70" value="32"></label>
+            <label class="f" for="sg-salary">固定月薪（新元 S$）<input id="sg-salary" type="number" inputmode="numeric" min="0" step="100" value="8000"></label>
+          </div>
+          <fieldset><legend>雇主所属行业</legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-sector" id="sg-sector-gen" value="gen" checked><span>非金融行业</span></label>
+              <label><input type="radio" name="sg-sector" id="sg-sector-fin" value="fin"><span>金融服务业</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>C1 薪资水平<small>与该行业同龄本地专业人士相比</small></legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-c1" id="sg-c1-20" value="20"><span>前 10%</span></label>
+              <label><input type="radio" name="sg-c1" id="sg-c1-10" value="10"><span>前 10%–35%</span></label>
+              <label><input type="radio" name="sg-c1" id="sg-c1-0" value="0"><span>低于前 35%</span></label>
+              <label><input type="radio" name="sg-c1" id="sg-c1-u" value="u" checked><span>不确定</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>C2 学历</legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-c2" id="sg-c2-20" value="20"><span>顶尖院校学位</span></label>
+              <label><input type="radio" name="sg-c2" id="sg-c2-10" value="10" checked><span>普通本科或同等学历</span></label>
+              <label><input type="radio" name="sg-c2" id="sg-c2-0" value="0"><span>本科以下</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>雇主规模<small>公司在新加坡的专业及管理岗（PMET）人数</small></legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-size" id="sg-size-s" value="small"><span>少于 25 人</span></label>
+              <label><input type="radio" name="sg-size" id="sg-size-l" value="large" checked><span>25 人及以上</span></label>
+            </div>
+          </fieldset>
+          <fieldset id="sg-c3-set"><legend>C3 多元化<small>公司 PMET 中与你同国籍的比例</small></legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-c3" id="sg-c3-20" value="20"><span>低于 5%</span></label>
+              <label><input type="radio" name="sg-c3" id="sg-c3-10" value="10"><span>5%–25%</span></label>
+              <label><input type="radio" name="sg-c3" id="sg-c3-0" value="0"><span>25% 及以上</span></label>
+              <label><input type="radio" name="sg-c3" id="sg-c3-u" value="u" checked><span>不确定</span></label>
+            </div>
+          </fieldset>
+          <fieldset id="sg-c4-set"><legend>C4 本地雇佣<small>公司本地 PMET 占比在同行业中的位置</small></legend>
+            <div class="seg">
+              <label><input type="radio" name="sg-c4" id="sg-c4-20" value="20"><span>中位数以上</span></label>
+              <label><input type="radio" name="sg-c4" id="sg-c4-10" value="10"><span>后 20%–50%</span></label>
+              <label><input type="radio" name="sg-c4" id="sg-c4-0" value="0"><span>后 20%</span></label>
+              <label><input type="radio" name="sg-c4" id="sg-c4-u" value="u" checked><span>不确定</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>加分项</legend>
+            <div class="seg">
+              <label><input type="checkbox" id="sg-c5"><span>C5 职位在紧缺职业清单（SOL）上</span></label>
+              <label><input type="checkbox" id="sg-c5-third"><span>同国籍占公司 PMET 三分之一以上</span></label>
+              <label><input type="checkbox" id="sg-c6"><span>C6 雇主参与政府战略经济项目</span></label>
+            </div>
+          </fieldset>
+        </form>
+
+        <div class="sgc-out" aria-live="polite">
+          <span class="kicker">自测结果</span>
+          <p class="verdict" id="sg-verdict"></p>
+          <p class="sub" id="sg-sub"></p>
+          <div class="meter" id="sg-meter">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span class="score" id="sg-score"></span><span class="sub">COMPASS 及格线 40 分</span></div>
+            <div class="bar"><span class="range" id="sg-range"></span><span class="fill" id="sg-fill"></span><span class="pass"></span></div>
+            <div class="lbl"><span>0</span><span>40</span><span>80</span></div>
+          </div>
+          <div class="ledger" id="sg-ledger"></div>
+          <a class="btn green" href="/contact" id="sg-cta" style="justify-self:start">请顾问核对结果</a>
+          <p class="fine">估算依据：EP 新申请最低月薪 S$5,600 起（金融业 S$6,200），随年龄递增至 45 岁 S$10,700（金融业 S$11,800），2025 年 1 月 1 日起适用；S Pass 新申请最低月薪 S$3,300 起（金融业 S$3,800），至 45 岁 S$4,800（金融业 S$5,650），2025 年 9 月 1 日起适用。23 至 45 岁之间按线性估算。月薪达到 S$22,500 可免 COMPASS 评估。MOM 已公布 2027 年 1 月 1 日起 EP 起点上调到 S$6,000（金融业 S$6,600）。本工具仅供参考，最终以 <a href="https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility" target="_blank" rel="noopener">MOM 官方</a>评估为准。</p>
+        </div>
+      </div>

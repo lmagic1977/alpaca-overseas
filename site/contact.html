@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>免费咨询 · 羊驼出海</title>
+<meta name="description" content="预约羊驼出海顾问免费评估。">
+<meta name="lead-endpoint" content="/api/lead">
+<meta name="theme-color" content="#11866a">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="羊驼出海首页"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>菜单</button>
+    <nav class="nav" id="main-nav" aria-label="主导航"><a href="/">首页</a><a href="/us">美国移民签证</a><a href="/nz">新西兰工签</a><a href="/sg">新加坡工签</a><a href="/jobs">新加坡职位</a><a href="/mx">墨西哥工签绿卡</a><a href="/about">关于我们</a><a class="nav-cta" href="/contact">免费咨询</a></nav>
+  </div>
+</header>
+<main>
+<section class="banner">
+  <div class="ph"><img src="/img/airport2.jpg" srcset="/img/airport2-s.jpg 800w, /img/airport2.jpg 1800w" sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async" onerror="this.remove()"></div>
+  <div class="wrap">
+    <nav class="crumb" aria-label="当前位置"><a href="/">首页</a><span>/</span><span>免费咨询</span></nav>
+    <h1>免费咨询</h1>
+    <p>留个联系方式，顾问 1 个工作日内找你。咨询不收费，资料不外传。</p>
+    
+  </div>
+</section>
+
+<section class="sec"><div class="wrap contact-grid">
+  <aside class="next">
+    <div class="ph"><img src="/img/meeting-s.jpg" alt="顾问正在和客户沟通" loading="lazy" decoding="async" onerror="this.remove()"></div>
+    <div class="body">
+      <h3>提交后会发生什么</h3>
+      <ol>
+        <li><span class="ic"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /><path d="M14.05 2a9 9 0 0 1 8 7.94" /><path d="M14.05 6A5 5 0 0 1 18 10" /></svg></span><div><b>顾问联系你</b><span>1 个工作日内，周一至周六 9:00–19:00</span></div></li>
+        <li><span class="ic"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" /><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></svg></span><div><b>免费评估</b><span>聊 20 分钟，看你适合哪条路</span></div></li>
+        <li><span class="ic"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /><path d="M13 6h8" /><path d="M13 12h8" /><path d="M13 18h8" /></svg></span><div><b>给你方案</b><span>路径、时间、费用一次讲清</span></div></li>
+      </ol>
+    </div>
+  </aside>
+  <form class="lead" id="lead" novalidate>
+    <h2>说说你的情况</h2>
+    <div class="fgrid">
+      <label class="f" for="f-name">称呼<input id="f-name" name="name" autocomplete="name" placeholder="例如：王先生" required></label>
+      <label class="f" for="f-contact">手机或微信号<input id="f-contact" name="contact" placeholder="方便顾问联系你" required></label>
+    </div>
+    <div class="fgrid">
+      <label class="f" for="f-service">感兴趣的服务
+        <select id="f-service" name="service">
+          <option>美国移民签证</option><option>新西兰工作签证</option><option>新加坡工作签证</option><option>墨西哥工签绿卡</option><option>还不确定，想听建议</option>
+        </select>
+      </label>
+      <label class="f" for="f-when">计划出发时间
+        <select id="f-when" name="when"><option>3 个月内</option><option selected>半年内</option><option>1 年内</option><option>先了解，时间不定</option></select>
+      </label>
+    </div>
+    <label class="f" for="f-msg">简单介绍一下<textarea id="f-msg" name="msg" placeholder="例如：厨师 8 年，想去新加坡工作，想知道能办什么准证。"></textarea></label>
+    <p class="err" id="f-err" hidden>请填写称呼和联系方式，顾问才能联系到你。</p>
+    <button class="btn green" type="submit" style="justify-self:start"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" /><path d="m21.854 2.147-10.94 10.939" /></svg>提交预约</button>
+    <p class="fine">提交即表示你同意我们为联系你而使用以上信息，资料不会提供给第三方。</p>
+    <div class="ok" id="f-ok" hidden><b>已收到你的预约</b><span id="f-ok-txt"></span></div>
+  </form>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="/"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+        <p class="slogan">要出国找羊驼</p>
+      </div>
+      <nav aria-label="页脚导航"><a href="/us">美国移民签证</a><a href="/nz">新西兰工签</a><a href="/sg">新加坡工签</a><a href="/jobs">新加坡职位</a><a href="/mx">墨西哥工签绿卡</a><a href="/about">关于我们</a><a href="/contact">免费咨询</a></nav>
+    </div>
+    <div class="legal">
+      <p>本站内容仅供参考，不构成法律意见。各国签证与移民政策会调整，以官方最新公布为准，申请结果由相关国家政府机构决定。</p>
+      <p>图片来自 Unsplash。© 2026 羊驼出海</p>
+    </div>
+  </div>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

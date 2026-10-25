@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新加坡职位查询 · 羊驼出海</title>
+<meta name="description" content="新加坡在招岗位查询：餐饮、酒店、建筑、司机、美业、工厂。">
+<meta name="lead-endpoint" content="/api/lead">
+<meta name="theme-color" content="#11866a">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="羊驼出海首页"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="main-nav"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>菜单</button>
+    <nav class="nav" id="main-nav" aria-label="主导航"><a href="/">首页</a><a href="/us">美国移民签证</a><a href="/nz">新西兰工签</a><a href="/sg">新加坡工签</a><a href="/jobs" class="on" aria-current="page">新加坡职位</a><a href="/mx">墨西哥工签绿卡</a><a href="/about">关于我们</a><a class="nav-cta" href="/contact">免费咨询</a></nav>
+  </div>
+</header>
+<main>
+<section class="banner">
+  <div class="ph"><img src="/img/sg-bay.jpg" srcset="/img/sg-bay-s.jpg 800w, /img/sg-bay.jpg 1800w" sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async" onerror="this.remove()"></div>
+  <div class="wrap">
+    <nav class="crumb" aria-label="当前位置"><a href="/">首页</a><span>/</span><span>新加坡职位</span></nav>
+    <h1>新加坡职位查询</h1>
+    <p>真实在招岗位，看中了直接让顾问帮你对接。</p>
+    <div class="chips"><span>共 <b data-jobs-count>243</b> 个岗位</span><span id="jupd"></span></div>
+  </div>
+</section>
+
+<section class="sec"><div class="wrap">
+  <div class="jobs-bar" role="search">
+    <label class="q" for="jq">搜索<input id="jq" type="search" placeholder="岗位、公司或关键词，如：厨师、司机、包住"></label>
+    <label for="jind">行业<select id="jind"><option value="">全部行业</option></select></label>
+    <label for="jpass">准证<select id="jpass"><option value="">全部准证</option></select></label>
+    <label for="jnt">国籍<select id="jnt"><option value="">不限国籍</option></select></label>
+    <label for="jrg">地区<select id="jrg"><option value="">全部地区</option></select></label>
+    <label for="jmin">底薪不低于<select id="jmin"><option value="0">不限</option><option value="1500">S$1,500</option><option value="2000">S$2,000</option><option value="2500">S$2,500</option><option value="3000">S$3,000</option><option value="3500">S$3,500</option></select></label>
+  </div>
+  <div class="cats" id="jcats" role="group" aria-label="按行业"></div>
+  <div class="jobs-sub">
+    <span class="count" aria-live="polite">找到 <b id="jcount">0</b> 个职位</span>
+    <label class="tick" for="jhs"><input type="checkbox" id="jhs">包住</label>
+    <label class="tick" for="jal"><input type="checkbox" id="jal">有住房补贴</label>
+    <span class="sortby" role="group" aria-label="排序">
+      <button type="button" data-sort="new" aria-pressed="true">最新发布</button>
+      <button type="button" data-sort="pay" aria-pressed="false">底薪最高</button>
+    </span>
+  </div>
+  <div class="job-list" id="jlist"></div>
+  <div class="jobs-more"><button type="button" class="btn line" id="jmore" hidden>显示更多职位</button></div>
+  <div class="jobs-legend">
+    <span><b>WP</b>工作准证</span><span><b>SP</b>S Pass</span><span><b>EP</b>就业准证</span><span><b>NTS</b>非传统来源国</span><span><b>BCA</b>需建筑局技能认证</span>
+  </div>
+</div></section>
+
+<section class="cta">
+  <div class="ph"><img src="/img/sg-mbs.jpg" srcset="/img/sg-mbs-s.jpg 800w, /img/sg-mbs.jpg 1800w" sizes="100vw" alt="" loading="lazy" decoding="async" onerror="this.remove()"></div>
+  <div class="wrap"><div><h2>没找到合适的？</h2><p>告诉顾问你的工种和期望薪资，有新岗位第一时间通知你。</p></div><a class="btn sun" href="/contact?service=新加坡工作签证"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" /><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></svg>让顾问帮我找</a></div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="/"><img src="/logo.svg" alt="" width="34" height="42"><span><b>羊驼出海</b><small>Alpaca Overseas</small></span></a>
+        <p class="slogan">要出国找羊驼</p>
+      </div>
+      <nav aria-label="页脚导航"><a href="/us">美国移民签证</a><a href="/nz">新西兰工签</a><a href="/sg">新加坡工签</a><a href="/jobs">新加坡职位</a><a href="/mx">墨西哥工签绿卡</a><a href="/about">关于我们</a><a href="/contact">免费咨询</a></nav>
+    </div>
+    <div class="legal">
+      <p>本站内容仅供参考，不构成法律意见。各国签证与移民政策会调整，以官方最新公布为准，申请结果由相关国家政府机构决定。</p>
+      <p>图片来自 Unsplash。© 2026 羊驼出海</p>
+    </div>
+  </div>
+</footer>
+<script src="/jobs-data.js"></script><script src="/app.js"></script>
+</body>
+</html>
