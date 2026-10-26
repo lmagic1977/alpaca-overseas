@@ -8,6 +8,11 @@ OUT = os.path.join(ROOT, 'site')
 ICON_CACHE = os.path.join(ROOT, 'tools', 'icons.json')
 ICON_DIR = sys.argv[1] if len(sys.argv) > 1 else None
 icons = json.load(open(ICON_CACHE)) if os.path.exists(ICON_CACHE) else {}
+JOBS = json.loads(open(os.path.join(ROOT, 'src', 'jobs-data.js')).read().split('=', 1)[1].strip().rstrip(';'))
+N_JOBS = len(JOBS)
+JOBS_UPDATED = max(j['d'] for j in JOBS)
+SITE = 'https://visas.run'
+BUILD_DATE = __import__('datetime').date.today().isoformat()
 
 
 def ic(name):
@@ -18,8 +23,18 @@ def ic(name):
             'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icons[name] + '</svg>')
 
 
+ALT = {
+    'alpaca-sg': '羊驼拖着行李走过新加坡樟宜机场', 'us-nyc': '美国纽约曼哈顿街景', 'us-gg': '美国旧金山金门大桥',
+    'us-esb': '纽约帝国大厦', 'nz-lake': '新西兰湖泊和雪山', 'nz-hills': '新西兰绿色丘陵', 'nz-town': '新西兰小镇街景',
+    'sg-mbs': '新加坡滨海湾金沙', 'sg-bay': '新加坡滨海湾', 'sg-merlion': '新加坡鱼尾狮', 'sg-merlion2': '新加坡鱼尾狮公园',
+    'mx-gto': '墨西哥瓜纳华托彩色街道', 'mx-angel': '墨西哥城独立天使纪念碑', 'airport': '机场里拖着行李的旅客',
+    'airport2': '机场出发大厅', 'meeting': '顾问正在和客户沟通', 'meeting2': '顾问和客户沟通', 'family': '一家人出国旅行',
+}
+
+
 def img(name, alt='', big=False, eager=False):
     """图片放在 .ph 里：加载前/失败时显示渐变底色。"""
+    alt = alt or ALT.get(name, '')
     attrs = 'loading="eager" fetchpriority="high"' if eager else 'loading="lazy"'
     if big:
         src = f'src="/img/{name}.jpg" srcset="/img/{name}-s.jpg 800w, /img/{name}.jpg 1800w" sizes="100vw"'
@@ -33,11 +48,13 @@ NAV = [('/', '首页'), ('/us', '美国移民签证'), ('/nz', '新西兰工签'
        ('/jobs', '新加坡职位'), ('/mx', '墨西哥工签绿卡'), ('/about', '关于我们')]
 
 
-def page(slug, title, desc, body, scripts=('app.js',)):
+def page(slug, title, desc, body, scripts=('app.js',), kw='', pic='alpaca-sg', ld=()):
     here = '/sg' if slug == '/jobs' else slug  # 职位查询归在新加坡下
     nav = ''.join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if h == here else ""}>{t}</a>' for h, t in TOP)
     js = ''.join(f'<script src="/{s}"></script>' for s in scripts)
-    full_title = '羊驼出海 LLAMA VISA · 要出国找羊驼' if slug == '/' else f'{title} · 羊驼出海 LLAMA VISA'
+    full_title = title if slug == '/' else f'{title}｜羊驼出海 LLAMA VISA'
+    url = SITE + slug
+    lds = ''.join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in ld_common(slug, title, url) + list(ld))
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -45,14 +62,26 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{full_title}</title>
 <meta name="description" content="{desc}">
+<meta name="keywords" content="{kw}">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="{url}">
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 <meta name="lead-endpoint" content="/api/lead">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="羊驼出海 LLAMA VISA">
 <meta property="og:title" content="{full_title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{SITE}/img/{pic}.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#11866a">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/styles.css">
-</head>
+{lds}</head>
 <body>
 <header class="top">
   <div class="wrap">
@@ -82,6 +111,27 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 </body>
 </html>
 '''
+
+
+ORG = {'@type': 'Organization', '@id': SITE + '/#org', 'name': '羊驼出海', 'alternateName': 'LLAMA VISA',
+       'url': SITE + '/', 'logo': SITE + '/logo.png', 'slogan': '要出国找羊驼',
+       'description': '美国移民签证、新西兰工作签证、新加坡工作签证、墨西哥工签绿卡办理。'}
+
+
+def ld_common(slug, title, url):
+    if slug == '/':
+        return [dict(ORG, **{'@context': 'https://schema.org'}),
+                {'@context': 'https://schema.org', '@type': 'WebSite', 'name': '羊驼出海 LLAMA VISA', 'url': SITE + '/',
+                 'inLanguage': 'zh-CN', 'publisher': {'@id': SITE + '/#org'}}]
+    crumbs = [('首页', SITE + '/')] + ([('新加坡工作签证', SITE + '/sg')] if slug == '/jobs' else []) + [(title.split('｜')[0], url)]
+    return [{'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(crumbs)]}]
+
+
+def service_ld(name, desc, country, types):
+    return {'@context': 'https://schema.org', '@type': 'Service', 'name': name, 'serviceType': types, 'description': desc,
+            'provider': ORG, 'areaServed': {'@type': 'Country', 'name': '中国'},
+            'audience': {'@type': 'Audience', 'audienceType': f'想去{country}工作、生活或移民的中国人'}}
 
 
 def banner(pic, crumb, h1, p, chips=(), acts=''):
@@ -168,7 +218,7 @@ SLIDES = [
      btn('/us', '了解美国', 'sun') + btn(consult('美国移民签证'), '问问顾问', 'glass', 'messages-square')),
     ('nz-lake', '新西兰工作签证', '在新西兰<em>边工作边生活</em>', '认证雇主工签 AEWV，做满条件衔接居留。',
      btn('/nz', '了解新西兰', 'sun') + btn(consult('新西兰工作签证'), '问问顾问', 'glass', 'messages-square')),
-    ('sg-merlion', '新加坡工作签证', '<em data-jobs-count>243</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
+    ('sg-merlion', '新加坡工作签证', f'<em data-jobs-count>{N_JOBS}</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
      btn('/jobs', '马上查职位', 'sun', 'search') + btn('/sg#check', 'EP 资格自测', 'glass', 'calculator')),
     ('mx-angel', '墨西哥工签绿卡', '墨西哥绿卡，<em>再签美国</em>', '先拿墨西哥工签和居留卡，住 5–6 个月，再在墨西哥申请美签。',
      btn('/mx#to-us', '看这条路线', 'sun') + btn(consult('墨西哥工签绿卡'), '问问顾问', 'glass', 'messages-square')),
@@ -203,7 +253,7 @@ SERVICES = [
 index_body = f'''{carousel()}
 
 <section class="sec stats-sec"><div class="wrap"><div class="stats">
-  <div class="stat"><span class="ic">{ic('briefcase')}</span><div><b data-jobs-count>243</b><span>新加坡在招岗位</span></div></div>
+  <div class="stat"><span class="ic">{ic('briefcase')}</span><div><b data-jobs-count>{N_JOBS}</b><span>新加坡在招岗位</span></div></div>
   <div class="stat"><span class="ic">{ic('globe')}</span><div><b>4</b><span>个目的地国家</span></div></div>
   <div class="stat"><span class="ic">{ic('user-check')}</span><div><b>1 对 1</b><span>专属顾问跟到底</span></div></div>
   <div class="stat"><span class="ic">{ic('badge-check')}</span><div><b>0 元</b><span>免费评估</span></div></div>
@@ -377,7 +427,7 @@ sg_body = f'''{banner('sg-merlion', '新加坡工作签证', '新加坡工作签
 </div></section>
 
 <section class="sec alt"><div class="wrap">
-  {split('sg-bay', '新加坡滨海湾', '在线查职位', '<span data-jobs-count>243</span> 个新加坡岗位，随时查', '餐饮、酒店、建筑、司机、美业、工厂，按国籍、准证、底薪、包住筛选。',
+  {split('sg-bay', '新加坡滨海湾', '在线查职位', '<span data-jobs-count>{N_JOBS}</span> 个新加坡岗位，随时查', '餐饮、酒店、建筑、司机、美业、工厂，按国籍、准证、底薪、包住筛选。',
          ['真实在招岗位，每天更新', '看中了，顾问帮你核实并安排面试', '不收求职者“买工作”的钱'],
          btn('/jobs', '马上查职位', 'green', 'search'))}
 </div></section>
@@ -400,8 +450,34 @@ sg_body = f'''{banner('sg-merlion', '新加坡工作签证', '新加坡工作签
 {cta('sg-merlion2', '想去新加坡？先免费评估', '有 offer 或想找工作都可以，顾问帮你看准证。', consult('新加坡工作签证'))}'''
 
 # ---------------- 职位查询 ----------------
+# 职位行：和 src/app.js 的 row() 输出一致。前 20 个直接写进 HTML（JS 加载后会重新渲染）
+IND_PIC = {'餐饮': 'job-chef', '酒店': 'job-hotel', '建筑': 'job-build', '司机': 'job-driver', '美业': 'job-salon', '工厂': 'job-factory'}
+
+
+def job_row(j):
+    from html import escape
+    from urllib.parse import quote
+    e = lambda x: escape(str(x), quote=True).replace('&#x27;', "'")
+    pic = '/img/' + next((v for k, v in IND_PIC.items() if j['ind'].startswith(k)), 'sg-bay') + '-s.jpg'
+    meta = []
+    if j['p']: meta.append(f'<span class="pp">{e(" · ".join(j["p"]))}</span>')
+    if j['nt']: meta.append(f'<span>限{e("/".join(j["nt"]))}籍</span>')
+    if j['rg'] != '未注明': meta.append(f'<span>{e(j["rg"])}</span>')
+    if j['hs']: meta.append('<span class="perk">包住</span>')
+    if j['al']: meta.append('<span class="perk">住补</span>')
+    dl = ''.join(f'<div><dt>{k}</dt><dd>{e(v)}</dd></div>' for k, v in [('薪资', j['pay']), ('工时与休息', j['h']), ('地点 / 编号', j['loc']),
+                 ('地区', j['rg']), ('发布日期', j['d']), ('职位编号', j['id'])] if v)
+    msg = f"【咨询职位 {j['id']}】{j['t']}" + (f"（{j['co']}）" if j['co'] else '') + f"，{j['pay'] or ''}。"
+    link = '/contact?service=' + quote('新加坡工作签证', safe="-_.!~*'()") + '&msg=' + quote(msg, safe="-_.!~*'()")
+    pay = f'S${round(j["b"]):,}<small>底薪起 / 月</small>' if j['b'] else '<small>薪资面议</small>'
+    return (f'<details class="job"><summary><span class="th"><span class="ph"><img src="{pic}" alt="" loading="lazy" decoding="async"></span></span>'
+            f'<span class="jt">{e(j["t"])}<small>{e(j["co"] or j["ind"])}</small><span class="jm">{"".join(meta)}</span></span>'
+            f'<span class="jb">{pay}</span></summary><div class="job-body"><dl>{dl}</dl>' + (f'<pre>{e(j["raw"])}</pre>' if j['raw'] else '') +
+            f'<div class="acts"><a class="btn green sm" href="{e(link)}">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details>')
+
+
 jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '真实在招岗位，看中了直接让顾问帮你对接。', [],
-               '<div class="chips"><span>共 <b data-jobs-count>243</b> 个岗位</span><span id="jupd"></span></div>')}
+               f'<div class="chips"><span>共 <b data-jobs-count>{N_JOBS}</b> 个岗位</span><span id="jupd">更新于 {JOBS_UPDATED}</span></div>')}
 
 <section class="sec"><div class="wrap">
   <div class="jobs-bar" role="search">
@@ -414,7 +490,7 @@ jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '�
   </div>
   <div class="cats" id="jcats" role="group" aria-label="按行业"></div>
   <div class="jobs-sub">
-    <span class="count" aria-live="polite">找到 <b id="jcount">0</b> 个职位</span>
+    <span class="count" aria-live="polite">找到 <b id="jcount">{N_JOBS}</b> 个职位</span>
     <label class="tick" for="jhs"><input type="checkbox" id="jhs">包住</label>
     <label class="tick" for="jal"><input type="checkbox" id="jal">有住房补贴</label>
     <span class="sortby" role="group" aria-label="排序">
@@ -422,7 +498,7 @@ jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '�
       <button type="button" data-sort="pay" aria-pressed="false">底薪最高</button>
     </span>
   </div>
-  <div class="job-list" id="jlist"></div>
+  <div class="job-list" id="jlist">{''.join(job_row(j) for j in JOBS[:20])}</div>
   <div class="jobs-more"><button type="button" class="btn line" id="jmore" hidden>显示更多职位</button></div>
   <div class="jobs-legend">
     <span><b>WP</b>工作准证</span><span><b>SP</b>S Pass</span><span><b>EP</b>就业准证</span><span><b>NTS</b>非传统来源国</span><span><b>BCA</b>需建筑局技能认证</span>
@@ -568,23 +644,58 @@ contact_body = f'''{banner('airport2', '免费咨询', '免费咨询', '留个�
   </form>
 </div></section>'''
 
+# (文件名, 路径, 标题, 描述, 正文, 脚本, 关键词, 分享图, 结构化数据)
+FAQ_LD = {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
+    {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]}
 PAGES = [
-    ('index', '/', '首页', '羊驼出海：美国移民签证、新西兰工作签证、新加坡工作签证、墨西哥工签绿卡。要出国找羊驼。', index_body, ('jobs-data.js', 'app.js')),
-    ('us', '/us', '美国移民签证', '美国旅游、留学、工作签证与 EB-1A、NIW、EB-5 绿卡规划。', us_body, ('app.js',)),
-    ('nz', '/nz', '新西兰工作签证', '新西兰工作项目开放报名：中专以上学历、2 年以上工作经验、PTE 29 分，多行业岗位匹配。', nz_body, ('app.js',)),
-    ('sg', '/sg', '新加坡工作签证', '新加坡 EP、S Pass、Work Permit 申请与 EP 资格自测。', sg_body, ('jobs-data.js', 'app.js')),
-    ('jobs', '/jobs', '新加坡职位查询', '新加坡在招岗位查询：餐饮、酒店、建筑、司机、美业、工厂。', jobs_body, ('jobs-data.js', 'app.js')),
-    ('mx', '/mx', '墨西哥工签绿卡', '墨西哥工作临时居留、经济能力居留、永久居留。', mx_body, ('app.js',)),
-    ('about', '/about', '关于我们', '关于羊驼出海与常见问题。', about_body, ('app.js',)),
-    ('contact', '/contact', '免费咨询', '预约羊驼出海顾问免费评估。', contact_body, ('app.js',)),
+    ('index', '/', '羊驼出海 LLAMA VISA｜美国签证移民·新西兰工签·新加坡工签·墨西哥绿卡',
+     f'羊驼出海（LLAMA VISA）出国签证与移民服务：美国旅游、留学、工作签证与绿卡，新西兰工作签证，新加坡 EP、S Pass、WP 工作准证和 {N_JOBS} 个在招职位，墨西哥工签与永久居留。要出国找羊驼，免费评估。',
+     index_body, ('jobs-data.js', 'app.js'),
+     '羊驼出海,LLAMA VISA,出国签证,移民中介,出国工作,美国签证,美国移民,新西兰工签,新加坡工签,新加坡工作,墨西哥绿卡,墨西哥签美国', 'alpaca-sg', ()),
+    ('us', '/us', '美国签证与移民｜B1/B2、F-1、H-1B、NIW、EB-5 绿卡办理',
+     '美国旅游签证 B1/B2、留学 F-1、工作签证 H-1B、L-1、O-1，以及 EB-1A、NIW、EB-5 绿卡规划。拒签复盘、材料准备、面签辅导，也可先拿墨西哥身份再申请美签。',
+     us_body, ('app.js',),
+     '美国签证,美国移民,美签,美国旅游签证,B1/B2,F-1留学签证,H-1B,L-1,O-1,EB-1A,NIW,EB-5,美国绿卡,美签拒签,墨西哥签美国', 'us-gg',
+     (service_ld('美国签证与移民', '美国旅游、留学、工作签证与 EB-1A、NIW、EB-5 绿卡规划。', '美国', ['美国签证', '美国移民', '美国绿卡']),)),
+    ('nz', '/nz', '新西兰工作签证｜AEWV 认证雇主工签、新西兰工作项目',
+     '新西兰工作签证 AEWV 办理：中专以上学历、2 年以上工作经验、PTE 29 分即可报名，多行业岗位匹配，持牌移民律师服务，做满条件可衔接新西兰居留。',
+     nz_body, ('app.js',),
+     '新西兰工签,新西兰工作签证,AEWV,新西兰工作,新西兰打工,新西兰移民,新西兰绿名单,新西兰技术移民', 'nz-lake',
+     (service_ld('新西兰工作签证', '新西兰认证雇主工作签证 AEWV 与多行业岗位匹配。', '新西兰', ['新西兰工作签证', 'AEWV']),)),
+    ('sg', '/sg', '新加坡工作签证｜EP、S Pass、WP 准证办理与 EP 资格自测',
+     f'新加坡工作准证办理：EP 就业准证、S Pass、Work Permit、ONE Pass、EntrePass、家属准证 DP。在线 EP 资格自测，{N_JOBS} 个新加坡在招岗位随时查。',
+     sg_body, ('jobs-data.js', 'app.js'),
+     '新加坡工签,新加坡工作签证,新加坡EP,新加坡S Pass,新加坡WP,新加坡工作准证,新加坡打工,新加坡劳务,新加坡就业准证,COMPASS', 'sg-merlion',
+     (service_ld('新加坡工作签证', '新加坡 EP、S Pass、Work Permit 等工作准证申请协助与岗位对接。', '新加坡', ['新加坡工作签证', 'EP', 'S Pass', 'Work Permit']),)),
+    ('jobs', '/jobs', f'新加坡招聘｜{N_JOBS} 个在招岗位：厨师、服务员、建筑、司机、工厂',
+     f'新加坡最新招聘 {N_JOBS} 个岗位，{JOBS_UPDATED} 更新：餐饮厨师和服务员、酒店、建筑、司机、美容美发、工厂，标明 WP、S Pass、EP 准证、底薪、包住和住房补贴，可按国籍筛选。',
+     jobs_body, ('jobs-data.js', 'app.js'),
+     '新加坡招聘,新加坡工作,新加坡找工作,新加坡厨师,新加坡服务员,新加坡建筑工,新加坡司机,新加坡工厂,新加坡包吃住,新加坡劳务', 'sg-bay', ()),
+    ('mx', '/mx', '墨西哥工签绿卡｜墨西哥工作居留、永久居留、墨西哥签美国',
+     '墨西哥雇主工签起步：1 年临时居留、3 年续签、永久居留到入籍，全程中文协助。持墨西哥居留卡住满 5–6 个月，可在墨西哥当地申请美国签证。',
+     mx_body, ('app.js',),
+     '墨西哥工签,墨西哥绿卡,墨西哥移民,墨西哥工作签证,墨西哥临时居留,墨西哥永久居留,墨西哥居留卡,墨西哥签美国,墨西哥美签', 'mx-gto',
+     (service_ld('墨西哥工签绿卡', '墨西哥工作临时居留、续签、永久居留办理，以及持墨西哥居留身份申请美签的规划。', '墨西哥', ['墨西哥工作签证', '墨西哥永久居留']),)),
+    ('about', '/about', '关于我们｜出国签证与移民顾问',
+     '羊驼出海专注美国、新西兰、新加坡、墨西哥四国签证与身份规划，先评估风险再办理，不忽悠不画饼。常见问题：免费评估准备什么、美签被拒还能不能再申请等。',
+     about_body, ('app.js',), '羊驼出海,LLAMA VISA,签证中介,移民顾问,出国咨询,美签拒签', 'meeting', (FAQ_LD,)),
+    ('contact', '/contact', '免费咨询｜预约出国签证移民评估',
+     '留下称呼和联系方式，羊驼出海顾问 1 个工作日内联系你，免费评估美国、新西兰、新加坡、墨西哥签证与工作机会。咨询不收费，资料不外传。',
+     contact_body, ('app.js',), '出国咨询,签证咨询,移民咨询,免费评估,羊驼出海', 'airport2', ()),
 ]
 
 if os.path.isdir(OUT):
     shutil.rmtree(OUT)
 os.makedirs(OUT)
-for name, slug, title, desc, body, scripts in PAGES:
+for name, slug, title, desc, body, scripts, kw, pic, ld in PAGES:
     with open(os.path.join(OUT, name + '.html'), 'w') as f:
-        f.write(page(slug, title, desc, body, scripts))
+        f.write(page(slug, title, desc, body, scripts, kw, pic, ld))
+# 搜索引擎：站点地图和 robots
+urls = ''.join(f'<url><loc>{SITE}{slug}</loc><lastmod>{JOBS_UPDATED if slug in ("/jobs", "/sg") else BUILD_DATE}</lastmod>'
+               f'<changefreq>{"daily" if slug == "/jobs" else "weekly"}</changefreq><priority>{"1.0" if slug == "/" else "0.8"}</priority></url>\n'
+               for _, slug, *_ in PAGES)
+open(os.path.join(OUT, 'sitemap.xml'), 'w').write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {SITE}/sitemap.xml\n')
 for src, dst in [('src/styles.css', 'styles.css'), ('src/app.js', 'app.js'), ('src/jobs-data.js', 'jobs-data.js'), ('logo.svg', 'logo.svg'), ('src/brand/logo.png', 'logo.png'), ('src/brand/favicon.png', 'favicon.png'), ('src/brand/favicon.ico', 'favicon.ico'), ('src/brand/apple-touch-icon.png', 'apple-touch-icon.png')]:
     shutil.copy(os.path.join(ROOT, src), os.path.join(OUT, dst))
 shutil.copytree(os.path.join(ROOT, 'src/img'), os.path.join(OUT, 'img'))  # 自有图片（Unsplash 图在 Vercel 构建时另外下载）

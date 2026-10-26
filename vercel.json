@@ -16,6 +16,7 @@
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
       ]
     },
+    { "source": "/(.*)", "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }], "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
     { "source": "/img/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
   ]
 }
