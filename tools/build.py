@@ -160,13 +160,13 @@ def mx_to_us(cls='sec mxus', link=True):
 
 
 SLIDES = [
-    ('hero-alpaca', '羊驼出海 · Alpaca Overseas', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
+    ('alpaca-sg', '羊驼出海 · Alpaca Overseas', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
      btn('/contact', '免费咨询', 'sun', 'messages-square') + btn('#services', '看看能去哪', 'glass')),
     ('us-nyc', '美国移民签证', '去美国，<em>签证绿卡</em>一起规划', '旅游、留学、H-1B、NIW、EB-5，先评估，再挑最稳的那条路。',
      btn('/us', '了解美国', 'sun') + btn(consult('美国移民签证'), '问问顾问', 'glass', 'messages-square')),
     ('nz-lake', '新西兰工作签证', '在新西兰<em>边工作边生活</em>', '认证雇主工签 AEWV，做满条件衔接居留。',
      btn('/nz', '了解新西兰', 'sun') + btn(consult('新西兰工作签证'), '问问顾问', 'glass', 'messages-square')),
-    ('alpaca-sg', '新加坡工作签证', '<em data-jobs-count>243</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
+    ('sg-merlion', '新加坡工作签证', '<em data-jobs-count>243</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
      btn('/jobs', '马上查职位', 'sun', 'search') + btn('/sg#check', 'EP 资格自测', 'glass', 'calculator')),
     ('mx-angel', '墨西哥工签绿卡', '墨西哥绿卡，<em>再签美国</em>', '先拿墨西哥工签和居留卡，住 5–6 个月，再在墨西哥申请美签。',
      btn('/mx#to-us', '看这条路线', 'sun') + btn(consult('墨西哥工签绿卡'), '问问顾问', 'glass', 'messages-square')),
@@ -359,7 +359,7 @@ nz_body = f'''{banner('nz-lake', '新西兰工作签证', '新西兰工作项目
 
 # ---------------- 新加坡 ----------------
 sg_check = open(os.path.join(ROOT, 'tools', 'sg-check.html')).read()
-sg_body = f'''{banner('alpaca-sg', '新加坡工作签证', '新加坡工作签证', '离家近、说中文、税率低。准证由雇主申请，我们帮你把申请做对。', ['EP', 'S Pass', 'Work Permit', 'ONE Pass', 'EntrePass', 'DP'],
+sg_body = f'''{banner('sg-merlion', '新加坡工作签证', '新加坡工作签证', '离家近、说中文、税率低。准证由雇主申请，我们帮你把申请做对。', ['EP', 'S Pass', 'Work Permit', 'ONE Pass', 'EntrePass', 'DP'],
               f'<div class="acts">{btn("/jobs", "查新加坡职位", "sun", "search")}{btn("#check", "EP 资格自测", "glass", "calculator")}</div>')}
 
 <section class="sec"><div class="wrap">
@@ -395,7 +395,7 @@ sg_body = f'''{banner('alpaca-sg', '新加坡工作签证', '新加坡工作签�
   ])}
 </div></section>
 
-{cta('sg-mbs', '想去新加坡？先免费评估', '有 offer 或想找工作都可以，顾问帮你看准证。', consult('新加坡工作签证'))}'''
+{cta('sg-merlion2', '想去新加坡？先免费评估', '有 offer 或想找工作都可以，顾问帮你看准证。', consult('新加坡工作签证'))}'''
 
 # ---------------- 职位查询 ----------------
 jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '真实在招岗位，看中了直接让顾问帮你对接。', [],
