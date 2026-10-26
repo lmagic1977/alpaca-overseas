@@ -37,7 +37,7 @@ def page(slug, title, desc, body, scripts=('app.js',)):
     here = '/sg' if slug == '/jobs' else slug  # 职位查询归在新加坡下
     nav = ''.join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if h == here else ""}>{t}</a>' for h, t in TOP)
     js = ''.join(f'<script src="/{s}"></script>' for s in scripts)
-    full_title = '羊驼出海 · 要出国找羊驼' if slug == '/' else f'{title} · 羊驼出海'
+    full_title = '羊驼出海 LLAMA VISA · 要出国找羊驼' if slug == '/' else f'{title} · 羊驼出海 LLAMA VISA'
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -46,6 +46,8 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 <title>{full_title}</title>
 <meta name="description" content="{desc}">
 <meta name="lead-endpoint" content="/api/lead">
+<meta property="og:site_name" content="羊驼出海 LLAMA VISA">
+<meta property="og:title" content="{full_title}">
 <meta name="theme-color" content="#11866a">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -54,7 +56,7 @@ def page(slug, title, desc, body, scripts=('app.js',)):
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="羊驼出海首页"><img class="logo" src="/logo.png" alt="羊驼出海" width="388" height="120"></a>
+    <a class="brand" href="/" aria-label="羊驼出海首页"><img class="logo" src="/logo.png" alt="羊驼出海 LLAMA VISA" width="388" height="120"></a>
     <nav class="nav" id="main-nav" aria-label="主导航">{nav}</nav>
   </div>
 </header>
@@ -65,7 +67,7 @@ def page(slug, title, desc, body, scripts=('app.js',)):
   <div class="wrap">
     <div class="cols">
       <div>
-        <a class="brand pill" href="/"><img class="logo" src="/logo.png" alt="羊驼出海" width="388" height="120"></a>
+        <a class="brand pill" href="/"><img class="logo" src="/logo.png" alt="羊驼出海 LLAMA VISA" width="388" height="120"></a>
         <p class="slogan">要出国找羊驼</p>
       </div>
       <nav aria-label="页脚导航">{''.join(f'<a href="{h}">{t}</a>' for h, t in NAV[1:])}<a href="/contact">免费咨询</a></nav>
@@ -160,7 +162,7 @@ def mx_to_us(cls='sec mxus', link=True):
 
 
 SLIDES = [
-    ('alpaca-sg', '羊驼出海 · Alpaca Overseas', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
+    ('alpaca-sg', '羊驼出海 · LLAMA VISA', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
      btn('/contact', '免费咨询', 'sun', 'messages-square') + btn('#services', '看看能去哪', 'glass')),
     ('us-nyc', '美国移民签证', '去美国，<em>签证绿卡</em>一起规划', '旅游、留学、H-1B、NIW、EB-5，先评估，再挑最稳的那条路。',
      btn('/us', '了解美国', 'sun') + btn(consult('美国移民签证'), '问问顾问', 'glass', 'messages-square')),
