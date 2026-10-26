@@ -45,7 +45,7 @@ def img(name, alt='', big=False, eager=False):
 
 TOP = [('/us', '美国'), ('/nz', '新西兰'), ('/sg', '新加坡'), ('/mx', '墨西哥')]  # 顶部菜单只放四个国家
 NAV = [('/', '首页'), ('/us', '美国移民签证'), ('/nz', '新西兰工签'), ('/sg', '新加坡工签'),
-       ('/jobs', '新加坡职位'), ('/mx', '墨西哥工签绿卡'), ('/about', '关于我们')]
+       ('/jobs', '新加坡职位'), ('/mx', '墨西哥工签绿卡'), ('/blog', '出海攻略'), ('/about', '关于我们')]
 
 
 def page(slug, title, desc, body, scripts=('app.js',), kw='', pic='alpaca-sg', ld=()):
@@ -123,7 +123,8 @@ def ld_common(slug, title, url):
         return [dict(ORG, **{'@context': 'https://schema.org'}),
                 {'@context': 'https://schema.org', '@type': 'WebSite', 'name': '羊驼出海 LLAMA VISA', 'url': SITE + '/',
                  'inLanguage': 'zh-CN', 'publisher': {'@id': SITE + '/#org'}}]
-    crumbs = [('首页', SITE + '/')] + ([('新加坡工作签证', SITE + '/sg')] if slug == '/jobs' else []) + [(title.split('｜')[0], url)]
+    parent = [('新加坡工作签证', SITE + '/sg')] if slug == '/jobs' else [('出海攻略', SITE + '/blog')] if slug.startswith('/blog/') else []
+    crumbs = [('首页', SITE + '/')] + parent + [(title.split('｜')[0], url)]
     return [{'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
         {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(crumbs)]}]
 
@@ -250,6 +251,93 @@ SERVICES = [
     ('/mx', 'mx-gto', '墨西哥', '墨西哥工签绿卡', ['工作居留', '永久居留']),
 ]
 
+# ---------------- 出海攻略（博客）：src/blog/*.md，一篇一个文件 ----------------
+def inline(t):
+    from html import escape
+    t = escape(t, quote=False)
+    t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
+    return re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', r'<a href="\2">\1</a>', t)
+
+
+def md(text):
+    """够用的 Markdown：## / ### 标题、- 和 1. 列表、> 提示、**加粗**、[链接](地址)、空行分段。"""
+    out, para, lst = [], [], None
+    def flush():
+        nonlocal para, lst
+        if para: out.append(f'<p>{inline(" ".join(para))}</p>'); para = []
+        if lst: out.append(f'<{lst[0]}>' + ''.join(f'<li>{inline(x)}</li>' for x in lst[1]) + f'</{lst[0]}>'); lst = None
+    for line in text.splitlines():
+        s = line.strip()
+        m = re.match(r'(-|\d+\.)\s+(.*)', s)
+        if not s:
+            flush()
+        elif s.startswith('#'):
+            flush(); n = min(len(s) - len(s.lstrip('#')), 3)
+            out.append(f'<h{n}>{inline(s.lstrip("#").strip())}</h{n}>')
+        elif s.startswith('>'):
+            flush(); out.append(f'<aside class="note">{ic("info")}<p>{inline(s[1:].strip())}</p></aside>')
+        elif m:
+            if para: flush()
+            kind = 'ul' if m.group(1) == '-' else 'ol'
+            if lst and lst[0] != kind: flush()
+            lst = lst or (kind, [])
+            lst[1].append(m.group(2))
+        else:
+            if lst: flush()
+            para.append(s)
+    flush()
+    return '\n'.join(out)
+
+
+POSTS = []
+for fn in sorted(os.listdir(os.path.join(ROOT, 'src', 'blog'))):
+    if not fn.endswith('.md') or fn == 'README.md':
+        continue
+    raw = open(os.path.join(ROOT, 'src', 'blog', fn)).read()
+    _, fm, text = raw.split('---', 2)
+    post = dict(l.split(':', 1) for l in fm.strip().splitlines())
+    post = {k.strip(): v.strip() for k, v in post.items()}
+    post.update(slug=fn[:-3], html=md(text))
+    POSTS.append(post)
+POSTS.sort(key=lambda x: (x['date'], x['slug']), reverse=True)
+
+
+def post_cards(posts):
+    return '<div class="post-grid">' + ''.join(
+        f'<a class="svc-card post-card" href="/blog/{x["slug"]}">{img(x["pic"])}<span class="flag">{x["tag"]}</span>'
+        f'<div class="body"><h3>{x["title"]}</h3><p>{x["description"]}</p><span class="date">{x["date"]}</span></div></a>' for x in posts) + '</div>'
+
+
+blog_body = f'''{banner('airport', '出海攻略', '出海攻略', '签证、准证、工作和生活，出发前想知道的，我们写成了大白话。', [p for p in dict.fromkeys(x['tag'] for x in POSTS)])}
+<section class="sec"><div class="wrap">{post_cards(POSTS)}</div></section>
+{cta()}'''
+
+
+def post_body(x):
+    more = [y for y in POSTS if y['slug'] != x['slug']][:3]
+    return f'''<section class="banner post-banner">
+  {img(x['pic'], '', big=True, eager=True)}
+  <div class="wrap">
+    <nav class="crumb" aria-label="当前位置"><a href="/">首页</a><span>/</span><a href="/blog">出海攻略</a><span>/</span><span>{x['tag']}</span></nav>
+    <h1>{x['title']}</h1>
+    <div class="chips"><span>{x['tag']}</span><span><time datetime="{x['date']}">{x['date']}</time></span><span>羊驼出海</span></div>
+  </div>
+</section>
+<section class="sec"><div class="wrap"><article class="prose">
+{x['html']}
+<div class="acts">{btn(consult(x.get('service', '')), '免费评估我的情况', 'green', 'messages-square')}{btn('/blog', '更多攻略', 'line')}</div>
+</article></div></section>
+<section class="sec tint"><div class="wrap">{head('接着看', '更多出海攻略')}{post_cards(more)}</div></section>
+{cta()}'''
+
+
+def post_ld(x):
+    url = f'{SITE}/blog/{x["slug"]}'
+    return ({'@context': 'https://schema.org', '@type': 'BlogPosting', 'headline': x['title'], 'description': x['description'],
+             'keywords': x['keywords'], 'datePublished': x['date'], 'dateModified': x['date'], 'inLanguage': 'zh-CN',
+             'image': f'{SITE}/img/{x["pic"]}.jpg', 'mainEntityOfPage': url, 'author': ORG, 'publisher': ORG},)
+
+
 index_body = f'''{carousel()}
 
 <section class="sec stats-sec"><div class="wrap"><div class="stats">
@@ -296,6 +384,11 @@ index_body = f'''{carousel()}
     <li><span class="ic">{ic('stamp')}</span><b>递交跟进</b><span>补件、面签全程陪</span></li>
     <li><span class="ic">{ic('plane-takeoff')}</span><b>出发落地</b><span>入境、住宿、开户都帮你</span></li>
   </ol>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  {head('出海攻略', '出发前，先看看这些', '', btn('/blog', '全部攻略', 'line'))}
+  {post_cards(POSTS[:4])}
 </div></section>
 
 {cta()}'''
@@ -679,6 +772,13 @@ PAGES = [
     ('about', '/about', '关于我们｜出国签证与移民顾问',
      '羊驼出海专注美国、新西兰、新加坡、墨西哥四国签证与身份规划，先评估风险再办理，不忽悠不画饼。常见问题：免费评估准备什么、美签被拒还能不能再申请等。',
      about_body, ('app.js',), '羊驼出海,LLAMA VISA,签证中介,移民顾问,出国咨询,美签拒签', 'meeting', (FAQ_LD,)),
+    ('blog', '/blog', '出海攻略｜美国签证、新加坡工签、新西兰工签、墨西哥移民经验',
+     '羊驼出海的出海攻略：美签面签和拒签再申请、新加坡 EP/S Pass/WP 怎么选、新西兰 AEWV 工签条件、先拿墨西哥身份再签美国，用大白话讲清楚。',
+     blog_body, ('app.js',), '出国攻略,签证攻略,美签面签,新加坡工作准证,新西兰工签条件,墨西哥签美国,出国打工', 'airport', ()),
+] + [
+    (f'blog/{x["slug"]}', f'/blog/{x["slug"]}', x['title'], x['description'], post_body(x), ('app.js',), x['keywords'], x['pic'], post_ld(x))
+    for x in POSTS
+] + [
     ('contact', '/contact', '免费咨询｜预约出国签证移民评估',
      '留下称呼和联系方式，羊驼出海顾问 1 个工作日内联系你，免费评估美国、新西兰、新加坡、墨西哥签证与工作机会。咨询不收费，资料不外传。',
      contact_body, ('app.js',), '出国咨询,签证咨询,移民咨询,免费评估,羊驼出海', 'airport2', ()),
@@ -686,12 +786,13 @@ PAGES = [
 
 if os.path.isdir(OUT):
     shutil.rmtree(OUT)
-os.makedirs(OUT)
+os.makedirs(os.path.join(OUT, 'blog'))
 for name, slug, title, desc, body, scripts, kw, pic, ld in PAGES:
     with open(os.path.join(OUT, name + '.html'), 'w') as f:
         f.write(page(slug, title, desc, body, scripts, kw, pic, ld))
 # 搜索引擎：站点地图和 robots
-urls = ''.join(f'<url><loc>{SITE}{slug}</loc><lastmod>{JOBS_UPDATED if slug in ("/jobs", "/sg") else BUILD_DATE}</lastmod>'
+POST_DATES = {f'/blog/{x["slug"]}': x['date'] for x in POSTS}
+urls = ''.join(f'<url><loc>{SITE}{slug}</loc><lastmod>{JOBS_UPDATED if slug in ("/jobs", "/sg") else POST_DATES.get(slug, BUILD_DATE)}</lastmod>'
                f'<changefreq>{"daily" if slug == "/jobs" else "weekly"}</changefreq><priority>{"1.0" if slug == "/" else "0.8"}</priority></url>\n'
                for _, slug, *_ in PAGES)
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
