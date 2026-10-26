@@ -168,7 +168,7 @@ SLIDES = [
      btn('/nz', '了解新西兰', 'sun') + btn(consult('新西兰工作签证'), '问问顾问', 'glass', 'messages-square')),
     ('alpaca-sg', '新加坡工作签证', '<em data-jobs-count>243</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
      btn('/jobs', '马上查职位', 'sun', 'search') + btn('/sg#check', 'EP 资格自测', 'glass', 'calculator')),
-    ('mx-city', '墨西哥工签绿卡', '墨西哥绿卡，<em>再签美国</em>', '先拿墨西哥工签和居留卡，住 5–6 个月，再在墨西哥申请美签。',
+    ('mx-angel', '墨西哥工签绿卡', '墨西哥绿卡，<em>再签美国</em>', '先拿墨西哥工签和居留卡，住 5–6 个月，再在墨西哥申请美签。',
      btn('/mx#to-us', '看这条路线', 'sun') + btn(consult('墨西哥工签绿卡'), '问问顾问', 'glass', 'messages-square')),
 ]
 
@@ -195,7 +195,7 @@ SERVICES = [
     ('/us', 'us-gg', '美国', '美国移民签证', ['B1/B2', 'F-1', 'H-1B', 'NIW', 'EB-5']),
     ('/nz', 'nz-hills', '新西兰', '新西兰工作签证', ['AEWV', '绿名单', '技术移民']),
     ('/sg', 'sg-bay', '新加坡', '新加坡工作签证', ['EP', 'S Pass', 'WP', '在线职位']),
-    ('/mx', 'mx-street', '墨西哥', '墨西哥工签绿卡', ['工作居留', '永久居留']),
+    ('/mx', 'mx-gto', '墨西哥', '墨西哥工签绿卡', ['工作居留', '永久居留']),
 ]
 
 index_body = f'''{carousel()}
@@ -445,7 +445,7 @@ MX_PAY = [('签约后', 'pen-line'), ('获得工签批文后', 'file-check'), ('
 MX_PERKS = [('shield-check', '合法合规办理'), ('languages', '全程中文服务'), ('user-check', '一对一顾问跟进'), ('calendar-check', '协助预约和备材料'),
             ('plane-takeoff', '协助入境换卡'), ('rotate-ccw', '可续签直至永居'), ('globe', '永居后无最低居住要求')]
 
-mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥合法居留项目', '雇主工签起步，1 年临时居留 → 3 年续签 → 永久居留 → 入籍，全程协助办理。', ['全程中文', '一对一顾问', '可续签至永居'],
+mx_body = f'''{banner('mx-gto', '墨西哥工签绿卡', '墨西哥合法居留项目', '雇主工签起步，1 年临时居留 → 3 年续签 → 永久居留 → 入籍，全程协助办理。', ['全程中文', '一对一顾问', '可续签至永居'],
               f'<div class="acts">{btn(consult("墨西哥工签绿卡"), "免费评估", "sun", "messages-square")}{btn("#to-us", "转美签路线", "glass", "plane-takeoff")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
 
 {mx_to_us('sec tint mxus', link=False)}
@@ -491,7 +491,7 @@ mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥合法居�
   <p class="note-box">{ic('info')}<span>风险提示：申请人须提供真实、完整、合法的申请材料。项目审批权归墨西哥移民局及相关领事机构所有，最终结果以官方审核为准。</span></p>
 </div></section>
 
-{cta('mx-city', '想去墨西哥？先免费评估', '说说你的情况，顾问帮你看能不能办、多久能办好。', consult('墨西哥工签绿卡'))}'''
+{cta('mx-angel', '想去墨西哥？先免费评估', '说说你的情况，顾问帮你看能不能办、多久能办好。', consult('墨西哥工签绿卡'))}'''
 
 # ---------------- 关于 ----------------
 FAQ = [
