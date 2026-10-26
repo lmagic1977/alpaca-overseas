@@ -143,6 +143,22 @@ def consult(service):
 
 
 # ---------------- 首页 ----------------
+# 墨西哥身份 → 美签路线（墨西哥页、美国页、首页共用）
+def mx_to_us(cls='sec mxus', link=True):
+    steps = [('stamp', '办墨西哥工签', '当地雇主申请，领馆面签'),
+             ('id-card', '拿居留卡', '入境换领墨西哥临时居留卡'),
+             ('house', '在墨西哥住 5–6 个月', '工作、住址、生活记录都齐了'),
+             ('plane-takeoff', '在墨西哥申请美签', '以墨西哥居民身份，到当地美国领馆面签')]
+    road = ''.join(f'<div><span class="ic">{ic(i)}</span><b>{t}</b><span>{d}</span></div>' for i, t, d in steps)
+    more = btn('/mx#to-us', '看墨西哥项目', 'green') if link else btn(consult('墨西哥工签绿卡'), '咨询这条路线', 'green', 'messages-square')
+    return f"""<section class="{cls}" id="to-us"><div class="wrap">
+  {head('去美国的新路线', '先拿墨西哥身份，再申请美签', '目前去美国我们最推荐的方案：手里有墨西哥居留卡，申请美签时身份更稳，美签没过也还有墨西哥这条退路。', more)}
+  <div class="road four mxus-road">{road}</div>
+  <div class="chips center"><span>墨西哥长期合法身份</span><span>在当地美国领馆申请</span><span>工作和居住记录完整</span><span>美签之外多一条退路</span></div>
+  <p class="fine center">美国签证由美国领事馆审核决定，我们帮你把材料和面签准备好，但不承诺获签结果。</p>
+</div></section>"""
+
+
 SLIDES = [
     ('hero-alpaca', '羊驼出海 · Alpaca Overseas', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
      btn('/contact', '免费咨询', 'sun', 'messages-square') + btn('#services', '看看能去哪', 'glass')),
@@ -152,8 +168,8 @@ SLIDES = [
      btn('/nz', '了解新西兰', 'sun') + btn(consult('新西兰工作签证'), '问问顾问', 'glass', 'messages-square')),
     ('sg-mbs', '新加坡工作签证', '<em data-jobs-count>243</em> 个新加坡岗位在招', '餐饮、酒店、建筑、司机、工厂，按国籍和底薪一键筛。',
      btn('/jobs', '马上查职位', 'sun', 'search') + btn('/sg#check', 'EP 资格自测', 'glass', 'calculator')),
-    ('mx-city', '墨西哥工签绿卡', '墨西哥，<em>北美</em>新机会', '工作居留满 4 年转永居，出海建厂的热门地。',
-     btn('/mx', '了解墨西哥', 'sun') + btn(consult('墨西哥工签绿卡'), '问问顾问', 'glass', 'messages-square')),
+    ('mx-city', '墨西哥工签绿卡', '墨西哥绿卡，<em>再签美国</em>', '先拿墨西哥工签和居留卡，住 5–6 个月，再在墨西哥申请美签。',
+     btn('/mx#to-us', '看这条路线', 'sun') + btn(consult('墨西哥工签绿卡'), '问问顾问', 'glass', 'messages-square')),
 ]
 
 
@@ -234,7 +250,9 @@ index_body = f'''{carousel()}
 
 # ---------------- 美国 ----------------
 us_body = f'''{banner('us-gg', '美国移民签证', '美国移民签证', '短期签证还是长期绿卡，先评估，再挑最快最稳的路。', ['B1/B2', 'F-1', 'H-1B', 'L-1', 'O-1', 'EB-1A', 'NIW', 'EB-5'],
-              f'<div class="acts">{btn(consult("美国移民签证"), "免费评估", "sun", "messages-square")}</div>')}
+              f'<div class="acts">{btn(consult("美国移民签证"), "免费评估", "sun", "messages-square")}{btn("#to-us", "墨西哥转美签", "glass", "plane-takeoff")}</div>')}
+
+{mx_to_us('sec tint mxus')}
 
 <section class="sec"><div class="wrap">
   <h2 class="subhead">{ic('plane')}短期签证：旅游、读书、工作</h2>
@@ -428,7 +446,9 @@ MX_PERKS = [('shield-check', '合法合规办理'), ('languages', '全程中文�
             ('plane-takeoff', '协助入境换卡'), ('rotate-ccw', '可续签直至永居'), ('globe', '永居后无最低居住要求')]
 
 mx_body = f'''{banner('mx-street', '墨西哥工签绿卡', '墨西哥合法居留项目', '雇主工签起步，1 年临时居留 → 3 年续签 → 永久居留 → 入籍，全程协助办理。', ['全程中文', '一对一顾问', '可续签至永居'],
-              f'<div class="acts">{btn(consult("墨西哥工签绿卡"), "免费评估", "sun", "messages-square")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
+              f'<div class="acts">{btn(consult("墨西哥工签绿卡"), "免费评估", "sun", "messages-square")}{btn("#to-us", "转美签路线", "glass", "plane-takeoff")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
+
+{mx_to_us('sec tint mxus', link=False)}
 
 <section class="sec"><div class="wrap">
   {head('办理流程', '三步拿到墨西哥居留卡')}

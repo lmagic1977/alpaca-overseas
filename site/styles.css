@@ -438,3 +438,9 @@ footer .legal { border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; 
 .steps6 b { font-size: 16px; }
 @media (max-width: 960px) { .steps6 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .steps6 { grid-template-columns: 1fr; gap: 10px; } .steps6 li { grid-template-columns: 44px auto 1fr; justify-items: start; text-align: left; align-items: center; column-gap: 12px; padding: 14px 16px; } .steps6 .ic { width: 44px; height: 44px; font-size: 22px; grid-row: 1; } }
+
+/* 墨西哥 → 美签路线：最后一站用美国红色 */
+.road.four.mxus-road div:last-child .ic { background: #b22234; border-color: #b22234; color: #fff; }
+.road.four.mxus-road div:nth-child(3) .ic { background: var(--sun); border-color: var(--sun); color: #2a2205; }
+section[id] { scroll-margin-top: 96px; }
+@media (max-width: 760px) { section[id] { scroll-margin-top: 110px; } }
