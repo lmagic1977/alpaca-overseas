@@ -12,15 +12,26 @@ PREFIX = 'window.__JOBS = '
 DROP_LINE = [
     re.compile(r'^\d{2}[A-Z]\d{4,5}$'),           # 中介执照/人员编号，如 94S0267
     re.compile(r'^费用\s*[$＄\d]'),                # 给同行的费用，如 费用$3500、费用1.3
+    re.compile(r'^(收费|特价单)[：:]?\s*(中国)?\s*[\d.]+$'),  # 同上，如 收费1.5、收费：中国 1.0、特价单1.2
+    re.compile(r'^美业订单[：:]'),
+    re.compile(r'^([一-龥]{2,3}\s*)+不要$'),          # 地域歧视，如 河南 东北不要
 ]
 DROP_PHRASE = [
     re.compile(r'[，,。 ]*合作价[：:][^，。\n]*'),
+    re.compile(r'[（(]合作价[^）)]*[）)]'),
+    re.compile(r'[，,\- ]*(代理|低)?收费\s*[：:]?\s*(\d(\.\d)?(?!\d)|\d+元)'),
+    re.compile(r'特价\s*\d\.\d'),
+    re.compile(r'[，,；; ]*优先[南北]方求职者'),
+    re.compile(r'[，,；; ]*[一-龥]{2,4}的暂时不要'),
+    re.compile(r'^低收费[,，]'),
+    re.compile(r'[，,；;。 ]*(形象具备亲和力，符合高端美妆品牌的专柜形象|形象一定要好|形象气质好|形象较好|形象佳|形象端庄|长相漂亮|[南北]方人|体重\s*\d+-\d+kg|身高\s*\d{3}(cm)?\s*以上)'),
+    re.compile(r'[，,；; ]*(形象好|大方端正|五官端正|皮肤状态良好|长相有亲和力|未婚未育|身高\d{3}以上|要求[一-龥]{2,5}华人)'),
     re.compile(r'[，,。 ]*(老板)?不要[一-龥]{1,4}人(和[一-龥]{1,4}人)*'),
     re.compile(r'[，,。 ]*要[一-龥]{2,3}(省)?人(?=[ ，,。\n]|$)'),
     re.compile(r'[，,。 ]*不要(戴|带)眼镜[一-龥]{0,8}'),
     re.compile(r'\[[一-龥]{1,3}\]'),       # 微信表情 [勾引][得意]
 ]
-KEEP_REQUIRE = re.compile(r'要(人在新|会|有|求)')  # “要会华语”之类不是地域要求
+KEEP_REQUIRE = re.compile(r'要(人在新|会|有|求(?![一-龥]{2,5}华人))')  # “要会华语”之类不是地域要求
 
 
 def clean(text):
@@ -31,7 +42,7 @@ def clean(text):
             continue
         for p in DROP_PHRASE:
             s = p.sub(lambda m: m.group(0) if KEEP_REQUIRE.search(m.group(0)) else '', s)
-        s = s.lstrip('•').strip()
+        s = re.sub(r'([：:])\s*[，,]\s*', r'\1', s).lstrip('•').strip()
         if s:
             lines.append(s)
     return '\n'.join(lines)
