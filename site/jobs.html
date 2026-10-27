@@ -45,6 +45,15 @@
 </section>
 
 <section class="sec"><div class="wrap">
+  <form class="jobs-lock" id="jlock" autocomplete="off">
+    <span class="ico"><svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></span>
+    <div class="txt"><h2>输入查询码，查看全部职位</h2><p>职位详情（薪资、工时、地点、要求）需要查询码。查询码可以找羊驼顾问获取，<b>100 元</b>一个。</p></div>
+    <label class="code" for="jcode"><span class="vh">查询码</span><input id="jcode" name="code" placeholder="例如 YT-ABCD-2345" maxlength="20" autocapitalize="characters" spellcheck="false" required></label>
+    <div class="acts"><button type="submit" class="btn green">查看职位</button>
+    <a class="btn line" href="/contact?service=新加坡工作签证&msg=我想获取新加坡职位查询码">获取查询码<svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" /><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></svg></a></div>
+    <p class="err" id="jlock-err" role="alert" hidden></p>
+  </form>
+  <div id="jtool" hidden>
   <div class="jobs-bar" role="search">
     <label class="q" for="jq">搜索<input id="jq" type="search" placeholder="岗位、公司或关键词，如：厨师、司机、包住"></label>
     <label for="jind">行业<select id="jind"><option value="">全部行业</option></select></label>
@@ -63,119 +72,9 @@
       <button type="button" data-sort="pay" aria-pressed="false">底薪最高</button>
     </span>
   </div>
-  <div class="job-list" id="jlist"><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-factory-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">家私木工 WP<small>家私木工</small><span class="jm"><span class="pp">WP</span><span>北部</span></span></span><span class="jb">S$2,400<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>2400</dd></div><div><dt>工时与休息</dt><dd>9:00-6:00或8:30-5:30，月休4天</dd></div><div><dt>地点 / 编号</dt><dd>兀兰 17</dd></div><div><dt>地区</dt><dd>北部</dd></div><div><dt>发布日期</dt><dd>2026-10-26</dd></div><div><dt>职位编号</dt><dd>SG269</dd></div></dl><pre>公司：家私木工
-职位：家私木工 wp（制造业现成名额）
-薪水：2400
-时间：9:00-6:00或8:30-5:30，月休4天
-说明：有家私/木工相关经验，会看图纸 独立完成，有责任心，工作认真
-地址：兀兰 17</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG269%E3%80%91%E5%AE%B6%E7%A7%81%E6%9C%A8%E5%B7%A5%20WP%EF%BC%88%E5%AE%B6%E7%A7%81%E6%9C%A8%E5%B7%A5%EF%BC%89%EF%BC%8C2400%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-driver-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">3号司机（自助盒饭送货）<small>司机/物流</small><span class="jm"><span class="pp">BCA</span><span>限印度籍</span><span>西部</span></span></span><span class="jb">S$1,275<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪$ 1275+ $安全奖 50 + 车辆清洁$50 +机器清洁$ 100+通…</dd></div><div><dt>工时与休息</dt><dd>12小时，月休2天</dd></div><div><dt>地点 / 编号</dt><dd>西部</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-26</dd></div><div><dt>职位编号</dt><dd>SG268</dd></div></dl><pre>新加坡自助盒饭送货司机
-印度3号司机 ✘ 2
-薪水： 底薪$ 1275+ $安全奖 50 + 车辆清洁$50 +机器清洁$ 100+通讯费 $25
-综合： $ 1700 + 提供吃住
-时间：12小时，月休2天
-地点：西部
-要求：需要懂一些机器维修知识，如果盒饭自助机器。
-需要有BCA 。</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG268%E3%80%913%E5%8F%B7%E5%8F%B8%E6%9C%BA%EF%BC%88%E8%87%AA%E5%8A%A9%E7%9B%92%E9%A5%AD%E9%80%81%E8%B4%A7%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA%24%201275%2B%20%24%E5%AE%89%E5%85%A8%E5%A5%96%2050%20%2B%20%E8%BD%A6%E8%BE%86%E6%B8%85%E6%B4%81%2450%20%2B%E6%9C%BA%E5%99%A8%E6%B8%85%E6%B4%81%24%20100%2B%E9%80%9A%E2%80%A6%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">自媒体运营（连锁SPA）WP<small>连锁spa</small><span class="jm"><span class="pp">WP</span><span>中部 / 市区</span></span></span><span class="jb">S$1,800<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪1800～3000(面议）</dd></div><div><dt>地点 / 编号</dt><dd>牛车水，宏茂桥</dd></div><div><dt>地区</dt><dd>中部 / 市区</dd></div><div><dt>发布日期</dt><dd>2026-10-26</dd></div><div><dt>职位编号</dt><dd>SG267</dd></div></dl><pre>公司：连锁spa
-职位：运营wp
-薪水：底薪1800～3000(面议）
-9～18 月休4天
-说明：主要工作是自媒体运营、软件推广、视频拍摄剪辑这样，但是要求是大学生，男女都行。有能力会调整薪水和增加提成
-地址：牛车水，宏茂桥</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG267%E3%80%91%E8%87%AA%E5%AA%92%E4%BD%93%E8%BF%90%E8%90%A5%EF%BC%88%E8%BF%9E%E9%94%81SPA%EF%BC%89WP%EF%BC%88%E8%BF%9E%E9%94%81spa%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA1800%EF%BD%9E3000(%E9%9D%A2%E8%AE%AE%EF%BC%89%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">中餐厨师  中国wp<small>餐饮</small><span class="jm"><span class="pp">WP</span><span>限中国籍</span><span>中部 / 市区</span><span class="perk">住补</span></span></span><span class="jb">S$2,300<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪2300，熟手可面试谈加薪，包吃</dd></div><div><dt>工时与休息</dt><dd>10am-10：30pm （下午3点到5点休息） 4天，周末固定休</dd></div><div><dt>地点 / 编号</dt><dd>中部，面试定DS</dd></div><div><dt>地区</dt><dd>中部 / 市区</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG266</dd></div></dl><pre>公司名称：餐饮
-岗位/准证：中餐厨师  中国wp
-薪水/住补：底薪2300，熟手可面试谈加薪，包吃
-工作时间:  10am-10：30pm （下午3点到5点休息）
-月休息日：4天，周末固定休
-工作要求：1.会切配，翻锅炒菜，煮海鲜面（经验没有过多要求，只要会就行）
-2.会英语或者韩语（可以基本沟通就行）
-工作地址：中部，面试定DS</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG266%E3%80%91%E4%B8%AD%E9%A4%90%E5%8E%A8%E5%B8%88%20%20%E4%B8%AD%E5%9B%BDwp%EF%BC%88%E9%A4%90%E9%A5%AE%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA2300%EF%BC%8C%E7%86%9F%E6%89%8B%E5%8F%AF%E9%9D%A2%E8%AF%95%E8%B0%88%E5%8A%A0%E8%96%AA%EF%BC%8C%E5%8C%85%E5%90%83%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-factory-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">数控铣床（编程）WP/SP<small>制造业</small><span class="jm"><span class="pp">WP · SP</span><span>限中国/印度籍</span><span>西部</span><span class="perk">包住</span><span class="perk">住补</span></span></span><span class="jb">S$2,000<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪2000，+OT1.5，综合2500-3000</dd></div><div><dt>工时与休息</dt><dd>8：00am-5：30pm 8</dd></div><div><dt>地点 / 编号</dt><dd>西部/面试定DS-piper</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG265</dd></div></dl><pre>公司名称： 制造业
-岗位/准证：数控铣床（编程） 中国wp/sp印度
-薪水/住补：底薪2000，+OT1.5，综合2500-3000
-工作时间:  8：00am-5：30pm
-吃住：包住，住外面提供150-200住补贴
-月休息日：8
-工作要求：会编程，可独立做工，人在新，可线下面试
-工作地址：西部/面试定DS-piper
-最快到岗时间：随时</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG265%E3%80%91%E6%95%B0%E6%8E%A7%E9%93%A3%E5%BA%8A%EF%BC%88%E7%BC%96%E7%A8%8B%EF%BC%89WP%2FSP%EF%BC%88%E5%88%B6%E9%80%A0%E4%B8%9A%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA2000%EF%BC%8C%2BOT1.5%EF%BC%8C%E7%BB%BC%E5%90%882500-3000%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">蛋糕烘焙师 WP 中国<small>蛋糕师</small><span class="jm"><span class="pp">WP</span><span>限中国籍</span><span class="perk">住补</span></span></span><span class="jb">S$2,500<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>2500-3500 新币</dd></div><div><dt>工时与休息</dt><dd>9am-7pm 双休 月休 8 天</dd></div><div><dt>地点 / 编号</dt><dd>面试定 95</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG264</dd></div></dl><pre>公司名称：蛋糕师
-岗位/准证：蛋糕烘培师 wp中国
-薪水/住补：2500-3500 新币
-工作时间：9am-7pm 双休
-月休息日：月休 8 天
-工作内容：老板要求看烘培手艺决定工资，实力说话，有自信求职者自带作品来。
-工作地址：面试定 95</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG264%E3%80%91%E8%9B%8B%E7%B3%95%E7%83%98%E7%84%99%E5%B8%88%20WP%20%E4%B8%AD%E5%9B%BD%EF%BC%88%E8%9B%8B%E7%B3%95%E5%B8%88%EF%BC%89%EF%BC%8C2500-3500%20%E6%96%B0%E5%B8%81%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-factory-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">印刷厂普工 WP 中国<small>新加坡印刷公司（包住，可接受年轻学徒！！）</small><span class="jm"><span class="pp">WP</span><span>限中国籍</span><span>西部</span><span class="perk">包住</span></span></span><span class="jb">S$1,450<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>1450新币（表现好可涨薪）+包住+OT（目前加班很多）</dd></div><div><dt>工时与休息</dt><dd>周工作5天</dd></div><div><dt>地点 / 编号</dt><dd>西部</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG263</dd></div></dl><pre>公司：新加坡印刷公司（包住，可接受年轻学徒！！）
-职位：WP中国普工
-时间：周工作5天
-薪水：1450新币（表现好可涨薪）+包住+OT（目前加班很多）
-要求：有相关经验者优先，培训后会操作机器，做书本装订，排页等工作
-福利：试用期后享有年假和病福利
-员工花红视员工表现和公司业绩情况而定
-地址：西部</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG263%E3%80%91%E5%8D%B0%E5%88%B7%E5%8E%82%E6%99%AE%E5%B7%A5%20WP%20%E4%B8%AD%E5%9B%BD%EF%BC%88%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%8D%B0%E5%88%B7%E5%85%AC%E5%8F%B8%EF%BC%88%E5%8C%85%E4%BD%8F%EF%BC%8C%E5%8F%AF%E6%8E%A5%E5%8F%97%E5%B9%B4%E8%BD%BB%E5%AD%A6%E5%BE%92%EF%BC%81%EF%BC%81%EF%BC%89%EF%BC%89%EF%BC%8C1450%E6%96%B0%E5%B8%81%EF%BC%88%E8%A1%A8%E7%8E%B0%E5%A5%BD%E5%8F%AF%E6%B6%A8%E8%96%AA%EF%BC%89%2B%E5%8C%85%E4%BD%8F%2BOT%EF%BC%88%E7%9B%AE%E5%89%8D%E5%8A%A0%E7%8F%AD%E5%BE%88%E5%A4%9A%EF%BC%89%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">帮厨 wp<small>西餐厅</small><span class="jm"><span class="pp">WP</span><span class="perk">住补</span></span></span><span class="jb">S$1,800<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>1800-2200 奖金</dd></div><div><dt>工时与休息</dt><dd>12小时 月休：2天</dd></div><div><dt>地点 / 编号</dt><dd>面试定 82</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG262</dd></div></dl><pre>公司名称：西餐厅
-岗位/准证：帮厨 wp
-薪水/住补：1800-2200 奖金
-工作时间：12小时
-月休息日：月休：2天
-工作要求：男，有西餐帮厨经验
-工作地址：面试定 82</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG262%E3%80%91%E5%B8%AE%E5%8E%A8%20wp%EF%BC%88%E8%A5%BF%E9%A4%90%E5%8E%85%EF%BC%89%EF%BC%8C1800-2200%20%E5%A5%96%E9%87%91%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">帮厨（海鲜餐厅）WP 中国<small>餐饮</small><span class="jm"><span class="pp">WP</span><span>限中国籍</span></span></span><span class="jb">S$2,000<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>工时与休息</dt><dd>12小时 月休4天</dd></div><div><dt>地点 / 编号</dt><dd>面试安排</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG261</dd></div></dl><pre>新加坡海鲜餐厅
-WP中国 岗位：帮厨
-薪水待遇：2000新币-2300新币 包吃工作餐 （表现好有涨薪）
-工作时间：12小时 月休4天
-工作要求：男生。35岁以下， 有经验 身体健康 服从安排
-工作地点：面试安排</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG261%E3%80%91%E5%B8%AE%E5%8E%A8%EF%BC%88%E6%B5%B7%E9%B2%9C%E9%A4%90%E5%8E%85%EF%BC%89WP%20%E4%B8%AD%E5%9B%BD%EF%BC%8C%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">中国市场招生与营销经理 EP<small>私立语言&amp;商业学校</small><span class="jm"><span class="pp">EP</span><span>限中国籍</span><span>西部</span></span></span><span class="jb">S$2,000<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪SGD2,000，看业绩提成，综合在SGD4,000~8,000，最高有SG…</dd></div><div><dt>工时与休息</dt><dd>每周44小时，5天半</dd></div><div><dt>地点 / 编号</dt><dd>裕廊东 11002</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG260</dd></div></dl><pre>公司：私立语言&amp;商业学校
-职位：中国市场招生与营销经理  EP中国2位
-薪水：底薪SGD2,000，看业绩提成，综合在SGD4,000~8,000，最高有SGD10,000多，不封顶，具体绩效奖金及提成方案待雇主确认。
-时间：每周44小时，5天半
-说明：女、，英文能流畅沟通，degree，最好是留学生，有Master degree（硕士学位）更佳，主要负责中国市场的品牌推广、招生渠道开发、学生及家长咨询转化，以及长期合作伙伴关系建设，吃住自理
-地址：裕廊东 11002</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG260%E3%80%91%E4%B8%AD%E5%9B%BD%E5%B8%82%E5%9C%BA%E6%8B%9B%E7%94%9F%E4%B8%8E%E8%90%A5%E9%94%80%E7%BB%8F%E7%90%86%20EP%EF%BC%88%E7%A7%81%E7%AB%8B%E8%AF%AD%E8%A8%80%26%E5%95%86%E4%B8%9A%E5%AD%A6%E6%A0%A1%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AASGD2%2C000%EF%BC%8C%E7%9C%8B%E4%B8%9A%E7%BB%A9%E6%8F%90%E6%88%90%EF%BC%8C%E7%BB%BC%E5%90%88%E5%9C%A8SGD4%2C000~8%2C000%EF%BC%8C%E6%9C%80%E9%AB%98%E6%9C%89SG%E2%80%A6%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">樟宜机场体验大使<small>酒店/销售/办公/其他</small><span class="jm"><span>东部</span></span></span><span class="jb">S$1,300<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪$1300 + 住宿津贴$300 + 仪容津贴$100 + 轮班津贴$100…</dd></div><div><dt>地点 / 编号</dt><dd>新加坡樟宜机场各航站楼（公司可根据运营需要在不同航站楼和服务点轮岗）</dd></div><div><dt>地区</dt><dd>东部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG259</dd></div></dl><pre>岗位：樟宜机场体验大使 Changi Experience Ambassador (CEA)
-工作地点：新加坡樟宜机场各航站楼（公司可根据运营需要在不同航站楼和服务点轮岗）
-薪水：底薪$1300 + 住宿津贴$300 + 仪容津贴$100 + 轮班津贴$100 + 交通津贴$100 + 地面营运津贴$100（转正后$200）+ ICC津贴$100 + 个人表现津贴最高$150（转正后）
-岗位职责：
-信息柜台：为旅客提供咨询指引，处理突发情况并上报，基础急救，安排轮椅及婴儿车，停车场咨询，新加坡旅游资讯
-流动服务：在机场各区域主动协助旅客，航班信息与方向指引，排队管理，协助检查登机证件，协助特殊旅客，GST退税指引，转机服务，推荐餐饮购物
-客服中心：处理电话、电邮、社交媒体咨询，记录客户反馈，回复客户问题及部分投诉
-备注：公司提供各种培训，需履行合约至少一年，否则需退还培训费 SGD $2100</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG259%E3%80%91%E6%A8%9F%E5%AE%9C%E6%9C%BA%E5%9C%BA%E4%BD%93%E9%AA%8C%E5%A4%A7%E4%BD%BF%EF%BC%8C%E5%BA%95%E8%96%AA%241300%20%2B%20%E4%BD%8F%E5%AE%BF%E6%B4%A5%E8%B4%B4%24300%20%2B%20%E4%BB%AA%E5%AE%B9%E6%B4%A5%E8%B4%B4%24100%20%2B%20%E8%BD%AE%E7%8F%AD%E6%B4%A5%E8%B4%B4%24100%E2%80%A6%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">度假村餐厅迎宾员<small>餐饮</small><span class="jm"></span></span><span class="jb">S$2,800<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪2800，13薪+花红</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG258</dd></div></dl><pre>新加坡度假村招聘餐厅迎宾员,底薪2800新币,每年加薪,提供工作餐,有带薪年假，病假,有13薪及花红，每周工作44小时，超时算加班,要求:会基本英文,如有空乘，酒店管理，海乘，高铁相关专业，有服务客服相关经验优先，良好的服务意识，视频初试，11月初青岛复试</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG258%E3%80%91%E5%BA%A6%E5%81%87%E6%9D%91%E9%A4%90%E5%8E%85%E8%BF%8E%E5%AE%BE%E5%91%98%EF%BC%8C%E5%BA%95%E8%96%AA2800%EF%BC%8C13%E8%96%AA%2B%E8%8A%B1%E7%BA%A2%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">机场客户服务专员（星耀樟宜）<small>酒店/销售/办公/其他</small><span class="jm"><span>东部</span></span></span><span class="jb">S$1,800<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>试用期 SGD $1800，转正后 SGD $1950+</dd></div><div><dt>工时与休息</dt><dd>轮班制（做3天，休2天），每班12小时（05:30–17:30 / 06:00–18:00 / 09:00–21:00 / 10:00–22:00 / 10:30–22:30），含固定带薪加班</dd></div><div><dt>地点 / 编号</dt><dd>星耀樟宜机场（Jewel Changi Airport）、樟宜体验馆（Changi Experience Studio）/Jewel Aviation Facilities (JAF)、Changi Lounge、GiFT by Changi</dd></div><div><dt>地区</dt><dd>东部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG257</dd></div></dl><pre>岗位：机场客户服务专员 Studio Experience Ambassador (SEA)
-工作地点：星耀樟宜机场（Jewel Changi Airport）、樟宜体验馆（Changi Experience Studio）/Jewel Aviation Facilities (JAF)、Changi Lounge、GiFT by Changi
-薪水：试用期 SGD $1800，转正后 SGD $1950+
-工作时间：轮班制（做3天，休2天），每班12小时（05:30–17:30 / 06:00–18:00 / 09:00–21:00 / 10:00–22:00 / 10:30–22:30），含固定带薪加班
-岗位职责：
-接待到访客户，处理门票销售、零售及贵宾厅咨询，推广门票套餐及促销活动
-门票销售、收银、开关账及日报
-在展馆内协助游客、保护展品、协助带领导览团
-商品标签、盘点及补货
-贵宾厅餐饮服务（咖啡、简餐、小吃）、清理餐具、维护整洁
-处理客户反馈及投诉，完成主管安排的其他工作
-合同：1年，需签约服务期1年（违约金 SGD $1300）</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG257%E3%80%91%E6%9C%BA%E5%9C%BA%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1%E4%B8%93%E5%91%98%EF%BC%88%E6%98%9F%E8%80%80%E6%A8%9F%E5%AE%9C%EF%BC%89%EF%BC%8C%E8%AF%95%E7%94%A8%E6%9C%9F%20SGD%20%241800%EF%BC%8C%E8%BD%AC%E6%AD%A3%E5%90%8E%20SGD%20%241950%2B%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">楼面经理/店长（连锁餐饮）<small>餐饮</small><span class="jm"></span></span><span class="jb">S$3,000<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>工时与休息</dt><dd>12小时，月休2天，</dd></div><div><dt>地点 / 编号</dt><dd>50</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG256</dd></div></dl><pre>岗位：楼面经理/店长 ,
-薪水 $3000+500
-时间：12小时，月休2天，
-备注：男/女，有店长经验，年假，病假，公共假期以及门店合伙人机会，要求有连锁餐饮管理经验，有责任心，有冲劲和耐心
-地址：50</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG256%E3%80%91%E6%A5%BC%E9%9D%A2%E7%BB%8F%E7%90%86%2F%E5%BA%97%E9%95%BF%EF%BC%88%E8%BF%9E%E9%94%81%E9%A4%90%E9%A5%AE%EF%BC%89%EF%BC%8C%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-chef-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">蛋糕师傅（会做小蛋糕和生日蛋糕）<small>餐饮</small><span class="jm"><span>西部</span></span></span><span class="jb">S$2,500<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>工时与休息</dt><dd>8-6，（一个礼拜50小时）拜天休息公共假期都休息</dd></div><div><dt>地点 / 编号</dt><dd>西部</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG255</dd></div></dl><pre>🔥(Y)：蛋糕部门女生(大公司，需要会做小蛋糕和生日蛋糕的)
-工作时间：8-6，（一个礼拜50小时）拜天休息公共假期都休息
-工作薪水：薪水2500
-工作要求： 有团队意识，态度好，必须要有经验。
-工作地点：西部</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG255%E3%80%91%E8%9B%8B%E7%B3%95%E5%B8%88%E5%82%85%EF%BC%88%E4%BC%9A%E5%81%9A%E5%B0%8F%E8%9B%8B%E7%B3%95%E5%92%8C%E7%94%9F%E6%97%A5%E8%9B%8B%E7%B3%95%EF%BC%89%EF%BC%8C%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">高端美妆销售专家（美国护肤品牌）<small>酒店/销售/办公/其他</small><span class="jm"></span></span><span class="jb">S$3,500<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪3500，综合4200-5000+</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG254</dd></div></dl><pre>新加坡知名高端美妆零售企业招聘美妆销售专家,月收入约4200-5000+新币,周休2天
-1.美国品牌护肤品销售岗位待遇:底薪3500新币,业绩提成：高额销售提成 + 团队奖金（综合月收入普遍可达 $4,200 - $5,000+ 新元，能力优秀者上不封顶）, 依法享有新加坡法定年假、公共假期及公司内部员工产品折扣福利.
-2. 美国品牌护肤品销售岗位工作时间: 每周工作 5 天（轮班制，含周末及公共假期），每周休息 2 天,依商场营业时间按班表轮流（包含合理的用餐与休息时间）.
-3. 美国品牌护肤品销售岗位要求:会英文交流,有高档护肤品、香水、奢侈品零售或美容行业销售经验者优先考虑,具备极强的销售和说服能力,性格外向、开朗。
-4. 美国品牌护肤品销售岗位职责: 为顾客提供专业的皮肤分析与咨询，建立并维护良好的客户关系，提升复购率，负责产品的陈列陈设、盘点补货，保持专柜及体验区的干净、整洁。邀请顾客到店内或专柜体验“手部/面部 SPA 护理, 积极向客户推荐护肤及洗护系列，完成并超越公司制定的个人及店铺每月销售 KPI。
-5.公司简介: 知名高端美妆零售企业,美国高端品牌护肤品,在机场，滨海湾，乌节路等都有门店.</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG254%E3%80%91%E9%AB%98%E7%AB%AF%E7%BE%8E%E5%A6%86%E9%94%80%E5%94%AE%E4%B8%93%E5%AE%B6%EF%BC%88%E7%BE%8E%E5%9B%BD%E6%8A%A4%E8%82%A4%E5%93%81%E7%89%8C%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA3500%EF%BC%8C%E7%BB%BC%E5%90%884200-5000%2B%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-build-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">泥瓦工 NTS<small>装修</small><span class="jm"><span class="pp">NTS</span><span class="perk">包住</span></span></span><span class="jb">S$1,200<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪1200-1500，OT1.5（面试定），包住</dd></div><div><dt>工时与休息</dt><dd>9am-6pm，月休4天</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG253</dd></div></dl><pre>公司：装修
-职位：泥瓦工 NTS
-薪水：底薪1200-1500，OT1.5（面试定），包住
-时间：9am-6pm，月休4天
-要求：有装修经验，会贴瓷砖、砌墙、抹灰</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG253%E3%80%91%E6%B3%A5%E7%93%A6%E5%B7%A5%20NTS%EF%BC%88%E8%A3%85%E4%BF%AE%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AA1200-1500%EF%BC%8COT1.5%EF%BC%88%E9%9D%A2%E8%AF%95%E5%AE%9A%EF%BC%89%EF%BC%8C%E5%8C%85%E4%BD%8F%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-build-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">装修木工学徒 WP 缅甸<small>装修公司</small><span class="jm"><span class="pp">WP · BCA</span><span>限缅甸籍</span><span class="perk">包住</span></span></span><span class="jb">S$1,500<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>SGD1500 包住 加班1.5倍</dd></div><div><dt>工时与休息</dt><dd>周一到周六9:00am-6:00pm 每月休息4天</dd></div><div><dt>地点 / 编号</dt><dd>三巴旺 52080</dd></div><div><dt>地区</dt><dd>未注明</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG252</dd></div></dl><pre>公司：装修公司
-职位：装修木工学徒 WP 缅甸
-薪资：SGD1500 包住 加班1.5倍
-工作时间：周一到周六9:00am-6:00pm 每月休息4天
-说明：男，45岁以下，有BCA，要求人在新加坡，吃苦耐劳，服从公司安排。
-地址：三巴旺 52080</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG252%E3%80%91%E8%A3%85%E4%BF%AE%E6%9C%A8%E5%B7%A5%E5%AD%A6%E5%BE%92%20WP%20%E7%BC%85%E7%94%B8%EF%BC%88%E8%A3%85%E4%BF%AE%E5%85%AC%E5%8F%B8%EF%BC%89%EF%BC%8CSGD1500%20%E5%8C%85%E4%BD%8F%20%E5%8A%A0%E7%8F%AD1.5%E5%80%8D%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-hotel-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">食品促销员 WP 马来西亚<small>娘惹糕食品厂</small><span class="jm"><span class="pp">WP</span><span>限马来西亚籍</span><span>南部 / 圣淘沙</span></span></span><span class="jb">S$2,200<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>底薪SGD2200 加销售提成</dd></div><div><dt>工时与休息</dt><dd>44小时每周</dd></div><div><dt>地点 / 编号</dt><dd>圣淘沙 52081</dd></div><div><dt>地区</dt><dd>南部 / 圣淘沙</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG251</dd></div></dl><pre>雇主：娘惹糕食品厂
-职位：促销员 WP 马来西亚
-薪资：底薪SGD2200 加销售提成
-工作时间：44小时每周
-说明：男女不限，普通话和英语流利，有新加坡食品促销经验优先。
-地址：圣淘沙 52081</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG251%E3%80%91%E9%A3%9F%E5%93%81%E4%BF%83%E9%94%80%E5%91%98%20WP%20%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BC%88%E5%A8%98%E6%83%B9%E7%B3%95%E9%A3%9F%E5%93%81%E5%8E%82%EF%BC%89%EF%BC%8C%E5%BA%95%E8%96%AASGD2200%20%E5%8A%A0%E9%94%80%E5%94%AE%E6%8F%90%E6%88%90%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details><details class="job"><summary><span class="th"><span class="ph"><img src="/img/job-factory-s.jpg" alt="" loading="lazy" decoding="async"></span></span><span class="jt">数控铣床操作员 WP/SP 中国 越南 缅甸<small>机械公司</small><span class="jm"><span class="pp">WP · SP</span><span>限中国/越南/缅甸籍</span><span>西部</span><span class="perk">住补</span></span></span><span class="jb">S$1,600<small>底薪起 / 月</small></span></summary><div class="job-body"><dl><div><dt>薪资</dt><dd>1600-1800$ 住补350$  OT1.5 综合：3000+</dd></div><div><dt>工时与休息</dt><dd>8AM-6PM月休8天 周末可加班</dd></div><div><dt>地点 / 编号</dt><dd>西部82</dd></div><div><dt>地区</dt><dd>西部</dd></div><div><dt>发布日期</dt><dd>2026-10-25</dd></div><div><dt>职位编号</dt><dd>SG250</dd></div></dl><pre>公司：机械公司
-职位：数控铣床 WP SP 中国 越南 缅甸
-薪水：1600-1800$ 住补350$  OT1.5 综合：3000+
-时间：8AM-6PM月休8天 周末可加班
-说明：男，数控铣床，不需要编程，会操机就可以，加班多，勤劳肯干，不怕辛苦，服从公司的一切工作安排
-地址：西部82</pre><div class="acts"><a class="btn green sm" href="/contact?service=%E6%96%B0%E5%8A%A0%E5%9D%A1%E5%B7%A5%E4%BD%9C%E7%AD%BE%E8%AF%81&amp;msg=%E3%80%90%E5%92%A8%E8%AF%A2%E8%81%8C%E4%BD%8D%20SG250%E3%80%91%E6%95%B0%E6%8E%A7%E9%93%A3%E5%BA%8A%E6%93%8D%E4%BD%9C%E5%91%98%20WP%2FSP%20%E4%B8%AD%E5%9B%BD%20%E8%B6%8A%E5%8D%97%20%E7%BC%85%E7%94%B8%EF%BC%88%E6%9C%BA%E6%A2%B0%E5%85%AC%E5%8F%B8%EF%BC%89%EF%BC%8C1600-1800%24%20%E4%BD%8F%E8%A1%A5350%24%20%20OT1.5%20%E7%BB%BC%E5%90%88%EF%BC%9A3000%2B%E3%80%82">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details></div>
+  <div class="job-list" id="jlist"></div>
   <div class="jobs-more"><button type="button" class="btn line" id="jmore" hidden>显示更多职位</button></div>
+  </div>
   <div class="jobs-legend">
     <span><b>WP</b>工作准证</span><span><b>SP</b>S Pass</span><span><b>EP</b>就业准证</span><span><b>NTS</b>非传统来源国</span><span><b>BCA</b>需建筑局技能认证</span>
   </div>
@@ -201,6 +100,6 @@ WP中国 岗位：帮厨
     </div>
   </div>
 </footer>
-<script src="/jobs-data.js"></script><script src="/app.js"></script>
+<script src="/app.js"></script>
 </body>
 </html>

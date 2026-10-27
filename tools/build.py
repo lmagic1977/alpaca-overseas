@@ -543,36 +543,21 @@ sg_body = f'''{banner('sg-merlion', '新加坡工作签证', '新加坡工作签
 {cta('sg-merlion2', '想去新加坡？先免费评估', '有 offer 或想找工作都可以，顾问帮你看准证。', consult('新加坡工作签证'))}'''
 
 # ---------------- 职位查询 ----------------
-# 职位行：和 src/app.js 的 row() 输出一致。前 20 个直接写进 HTML（JS 加载后会重新渲染）
 IND_PIC = {'餐饮': 'job-chef', '酒店': 'job-hotel', '建筑': 'job-build', '司机': 'job-driver', '美业': 'job-salon', '工厂': 'job-factory'}
-
-
-def job_row(j):
-    from html import escape
-    from urllib.parse import quote
-    e = lambda x: escape(str(x), quote=True).replace('&#x27;', "'")
-    pic = '/img/' + next((v for k, v in IND_PIC.items() if j['ind'].startswith(k)), 'sg-bay') + '-s.jpg'
-    meta = []
-    if j['p']: meta.append(f'<span class="pp">{e(" · ".join(j["p"]))}</span>')
-    if j['nt']: meta.append(f'<span>限{e("/".join(j["nt"]))}籍</span>')
-    if j['rg'] != '未注明': meta.append(f'<span>{e(j["rg"])}</span>')
-    if j['hs']: meta.append('<span class="perk">包住</span>')
-    if j['al']: meta.append('<span class="perk">住补</span>')
-    dl = ''.join(f'<div><dt>{k}</dt><dd>{e(v)}</dd></div>' for k, v in [('薪资', j['pay']), ('工时与休息', j['h']), ('地点 / 编号', j['loc']),
-                 ('地区', j['rg']), ('发布日期', j['d']), ('职位编号', j['id'])] if v)
-    msg = f"【咨询职位 {j['id']}】{j['t']}" + (f"（{j['co']}）" if j['co'] else '') + f"，{j['pay'] or ''}。"
-    link = '/contact?service=' + quote('新加坡工作签证', safe="-_.!~*'()") + '&msg=' + quote(msg, safe="-_.!~*'()")
-    pay = f'S${round(j["b"]):,}<small>底薪起 / 月</small>' if j['b'] else '<small>薪资面议</small>'
-    return (f'<details class="job"><summary><span class="th"><span class="ph"><img src="{pic}" alt="" loading="lazy" decoding="async"></span></span>'
-            f'<span class="jt">{e(j["t"])}<small>{e(j["co"] or j["ind"])}</small><span class="jm">{"".join(meta)}</span></span>'
-            f'<span class="jb">{pay}</span></summary><div class="job-body"><dl>{dl}</dl>' + (f'<pre>{e(j["raw"])}</pre>' if j['raw'] else '') +
-            f'<div class="acts"><a class="btn green sm" href="{e(link)}">咨询这个职位</a><span>顾问帮你核实岗位并安排面试</span></div></div></details>')
-
 
 jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '真实在招岗位，看中了直接让顾问帮你对接。', [],
                f'<div class="chips"><span>共 <b data-jobs-count>{N_JOBS}</b> 个岗位</span><span id="jupd">更新于 {JOBS_UPDATED}</span></div>')}
 
 <section class="sec"><div class="wrap">
+  <form class="jobs-lock" id="jlock" autocomplete="off">
+    <span class="ico">{ic('lock')}</span>
+    <div class="txt"><h2>输入查询码，查看全部职位</h2><p>职位详情（薪资、工时、地点、要求）需要查询码。查询码可以找羊驼顾问获取，<b>100 元</b>一个。</p></div>
+    <label class="code" for="jcode"><span class="vh">查询码</span><input id="jcode" name="code" placeholder="例如 YT-ABCD-2345" maxlength="20" autocapitalize="characters" spellcheck="false" required></label>
+    <div class="acts"><button type="submit" class="btn green">查看职位</button>
+    {btn(consult('新加坡工作签证') + '&msg=我想获取新加坡职位查询码', '获取查询码', 'line', 'messages-square')}</div>
+    <p class="err" id="jlock-err" role="alert" hidden></p>
+  </form>
+  <div id="jtool" hidden>
   <div class="jobs-bar" role="search">
     <label class="q" for="jq">搜索<input id="jq" type="search" placeholder="岗位、公司或关键词，如：厨师、司机、包住"></label>
     <label for="jind">行业<select id="jind"><option value="">全部行业</option></select></label>
@@ -591,8 +576,9 @@ jobs_body = f'''{banner('sg-bay', '新加坡职位', '新加坡职位查询', '�
       <button type="button" data-sort="pay" aria-pressed="false">底薪最高</button>
     </span>
   </div>
-  <div class="job-list" id="jlist">{''.join(job_row(j) for j in JOBS[:20])}</div>
+  <div class="job-list" id="jlist"></div>
   <div class="jobs-more"><button type="button" class="btn line" id="jmore" hidden>显示更多职位</button></div>
+  </div>
   <div class="jobs-legend">
     <span><b>WP</b>工作准证</span><span><b>SP</b>S Pass</span><span><b>EP</b>就业准证</span><span><b>NTS</b>非传统来源国</span><span><b>BCA</b>需建筑局技能认证</span>
   </div>
@@ -743,7 +729,7 @@ FAQ_LD = {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
 PAGES = [
     ('index', '/', '羊驼出海 LLAMA VISA｜美国签证移民·新西兰工签·新加坡工签·墨西哥绿卡',
      f'羊驼出海（LLAMA VISA）出国签证与移民服务：美国旅游、留学、工作签证与绿卡，新西兰工作签证，新加坡 EP、S Pass、WP 工作准证和 {N_JOBS} 个在招职位，墨西哥工签与永久居留。要出国找羊驼，免费评估。',
-     index_body, ('jobs-data.js', 'app.js'),
+     index_body, ('jobs-teaser.js', 'app.js'),
      '羊驼出海,LLAMA VISA,出国签证,移民中介,出国工作,美国签证,美国移民,新西兰工签,新加坡工签,新加坡工作,墨西哥绿卡,墨西哥签美国', 'alpaca-sg', ()),
     ('us', '/us', '美国签证与移民｜B1/B2、F-1、H-1B、NIW、EB-5 绿卡办理',
      '美国旅游签证 B1/B2、留学 F-1、工作签证 H-1B、L-1、O-1，以及 EB-1A、NIW、EB-5 绿卡规划。拒签复盘、材料准备、面签辅导，也可先拿墨西哥身份再申请美签。',
@@ -757,12 +743,12 @@ PAGES = [
      (service_ld('新西兰工作签证', '新西兰认证雇主工作签证 AEWV 与多行业岗位匹配。', '新西兰', ['新西兰工作签证', 'AEWV']),)),
     ('sg', '/sg', '新加坡工作签证｜EP、S Pass、WP 准证办理与 EP 资格自测',
      f'新加坡工作准证办理：EP 就业准证、S Pass、Work Permit、ONE Pass、EntrePass、家属准证 DP。在线 EP 资格自测，{N_JOBS} 个新加坡在招岗位随时查。',
-     sg_body, ('jobs-data.js', 'app.js'),
+     sg_body, ('app.js',),
      '新加坡工签,新加坡工作签证,新加坡EP,新加坡S Pass,新加坡WP,新加坡工作准证,新加坡打工,新加坡劳务,新加坡就业准证,COMPASS', 'sg-merlion',
      (service_ld('新加坡工作签证', '新加坡 EP、S Pass、Work Permit 等工作准证申请协助与岗位对接。', '新加坡', ['新加坡工作签证', 'EP', 'S Pass', 'Work Permit']),)),
     ('jobs', '/jobs', f'新加坡招聘｜{N_JOBS} 个在招岗位：厨师、服务员、建筑、司机、工厂',
      f'新加坡最新招聘 {N_JOBS} 个岗位，{JOBS_UPDATED} 更新：餐饮厨师和服务员、酒店、建筑、司机、美容美发、工厂，标明 WP、S Pass、EP 准证、底薪、包住和住房补贴，可按国籍筛选。',
-     jobs_body, ('jobs-data.js', 'app.js'),
+     jobs_body, ('app.js',),
      '新加坡招聘,新加坡工作,新加坡找工作,新加坡厨师,新加坡服务员,新加坡建筑工,新加坡司机,新加坡工厂,新加坡包吃住,新加坡劳务', 'sg-bay', ()),
     ('mx', '/mx', '墨西哥工签绿卡｜墨西哥工作居留、永久居留、墨西哥签美国',
      '墨西哥雇主工签起步：1 年临时居留、3 年续签、永久居留到入籍，全程中文协助。持墨西哥居留卡住满 5–6 个月，可在墨西哥当地申请美国签证。',
@@ -797,8 +783,16 @@ urls = ''.join(f'<url><loc>{SITE}{slug}</loc><lastmod>{JOBS_UPDATED if slug in (
                for _, slug, *_ in PAGES)
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
 open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {SITE}/sitemap.xml\n')
-for src, dst in [('src/styles.css', 'styles.css'), ('src/app.js', 'app.js'), ('src/jobs-data.js', 'jobs-data.js'), ('logo.svg', 'logo.svg'), ('src/brand/logo.png', 'logo.png'), ('src/brand/favicon.png', 'favicon.png'), ('src/brand/favicon.ico', 'favicon.ico'), ('src/brand/apple-touch-icon.png', 'apple-touch-icon.png')]:
+for src, dst in [('src/styles.css', 'styles.css'), ('src/app.js', 'app.js'), ('logo.svg', 'logo.svg'), ('src/brand/logo.png', 'logo.png'), ('src/brand/favicon.png', 'favicon.png'), ('src/brand/favicon.ico', 'favicon.ico'), ('src/brand/apple-touch-icon.png', 'apple-touch-icon.png')]:
     shutil.copy(os.path.join(ROOT, src), os.path.join(OUT, dst))
+# 职位数据不公开：完整数据只给 /api/jobs（凭查询码返回），首页只放几条摘要
+json.dump(JOBS, open(os.path.join(ROOT, 'api', '_jobs.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+teaser, per_ind = [], {}
+for j in JOBS:  # 每个行业挑最新、有底薪的 2 个，凑 8 个
+    if j['b'] and per_ind.get(j['ind'], 0) < 2 and len(teaser) < 8:
+        per_ind[j['ind']] = per_ind.get(j['ind'], 0) + 1
+        teaser.append({k: j[k] for k in ('id', 't', 'ind', 'p', 'hs', 'b', 'pay')})
+open(os.path.join(OUT, 'jobs-teaser.js'), 'w').write('window.__JOBS_TEASER = ' + json.dumps(teaser, ensure_ascii=False, separators=(',', ':')) + ';\n')
 shutil.copytree(os.path.join(ROOT, 'src/img'), os.path.join(OUT, 'img'))  # 自有图片（Unsplash 图在 Vercel 构建时另外下载）
 json.dump(icons, open(ICON_CACHE, 'w'), ensure_ascii=False, indent=0, sort_keys=True)
 print('built', len(PAGES), 'pages,', len(icons), 'icons')
