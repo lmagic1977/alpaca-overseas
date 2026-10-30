@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://visas.run/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-<url><loc>https://visas.run/us</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-<url><loc>https://visas.run/nz</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+<url><loc>https://visas.run/us</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/nz</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/sg</loc><lastmod>2026-10-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/jobs</loc><lastmod>2026-10-26</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://visas.run/mx</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-<url><loc>https://visas.run/about</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-<url><loc>https://visas.run/blog</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/mx</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/about</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/blog</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/blog/us-niw-guide</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/blog/mx-residence-card-steps</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/blog/nz-aewv-documents</loc><lastmod>2026-10-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/blog/sg-chef-guide</loc><lastmod>2026-10-27</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -16,5 +17,5 @@
 <url><loc>https://visas.run/blog/sg-work-pass-guide</loc><lastmod>2026-10-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/blog/nz-aewv-guide</loc><lastmod>2026-10-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 <url><loc>https://visas.run/blog/mx-to-us-visa</loc><lastmod>2026-10-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-<url><loc>https://visas.run/contact</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://visas.run/contact</loc><lastmod>2026-10-30</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
