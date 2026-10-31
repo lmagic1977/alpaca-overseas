@@ -9,7 +9,7 @@ var ph = function (src, alt) { return '<span class="ph"><img src="' + src + '" a
 document.addEventListener('error', function (e) { if (e.target.tagName === 'IMG' && e.target.closest('.ph')) e.target.remove(); }, true);
 [].forEach.call(document.querySelectorAll('.ph img'), function (img) { if (img.complete && !img.naturalWidth) img.remove(); });
 var jobLink = function (j) {
-  return '/contact?service=' + encodeURIComponent('新加坡工作签证') + '&msg=' + encodeURIComponent('【咨询职位 ' + j.id + '】' + j.t + (j.co ? '（' + j.co + '）' : '') + '，' + (j.pay || '') + '。');
+  return '/contact?service=' + encodeURIComponent('新加坡工作签证') + '&msg=' + encodeURIComponent('【咨询职位 ' + j.id + '】' + j.t + (j.co ? '（' + j.co + '）' : '') + (j.pay ? '，' + j.pay : '') + '。');
 };
 
 // 手机菜单
@@ -20,12 +20,6 @@ var jobLink = function (j) {
     var open = nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
-})();
-
-// 岗位总数
-(function () {
-  if (!window.__JOBS) return;
-  document.querySelectorAll('[data-jobs-count]').forEach(function (el) { el.textContent = window.__JOBS.length; });
 })();
 
 // 首页轮播：横向滚动吸附，自动播放，悬停或触摸时暂停
@@ -61,17 +55,11 @@ var jobLink = function (j) {
   play();
 })();
 
-// 首页热门岗位
+// 首页热门岗位（build.py 挑好的几条摘要）
 (function () {
   var rail = document.getElementById('jobrail');
-  if (!rail || !window.__JOBS) return;
-  var seen = {};
-  // 每个行业挑最新、有底薪的，凑 8 个，看起来更丰富
-  var picks = window.__JOBS.filter(function (j) { return j.b; }).filter(function (j) {
-    seen[j.ind] = (seen[j.ind] || 0) + 1;
-    return seen[j.ind] <= 2;
-  }).slice(0, 8);
-  rail.innerHTML = picks.map(function (j) {
+  if (!rail || !window.__JOBS_TEASER) return;
+  rail.innerHTML = window.__JOBS_TEASER.map(function (j) {
     var meta = [j.ind.split('/')[0]].concat(j.p.slice(0, 2));
     if (j.hs) meta.push('包住');
     return '<a class="jcard" href="' + jobLink(j) + '"><span class="ph">' + '<img src="' + indPic(j.ind) + '" alt="" loading="lazy" decoding="async">' +
@@ -204,12 +192,42 @@ var jobLink = function (j) {
   render();
 })();
 
-// 新加坡职位查询
+// 新加坡职位查询：先输查询码，/api/jobs 核对后返回职位。码记在本机，下次直接打开。
 (function () {
-  var JOBS = window.__JOBS || [];
+  var $ = function (id) { return document.getElementById(id); };
+  var lock = $('jlock');
+  if (!lock) return;
+  var KEY = 'yt-jobs-code', err = $('jlock-err'), go = lock.querySelector('button[type=submit]');
+  var saved = function (v) { try { if (v === undefined) return localStorage.getItem(KEY) || ''; v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) { return ''; } };
+  function unlock(code, quiet) {
+    go.disabled = true;
+    err.hidden = true;
+    fetch('/api/jobs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code }) })
+      .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || '查询失败'); return d; }); })
+      .then(function (d) {
+        saved(code);
+        lock.hidden = true;
+        $('jtool').hidden = false;
+        jobsTool(d.jobs);
+      })
+      .catch(function (e) {
+        go.disabled = false;
+        if (quiet) { saved(''); return; }  // 记住的码已作废，静默清掉
+        err.textContent = e.message === 'Failed to fetch' ? '网络不太好，请稍后再试。' : e.message;
+        err.hidden = false;
+      });
+  }
+  lock.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = $('jcode').value.trim();
+    if (code) unlock(code);
+  });
+  if (saved()) unlock(saved(), true);
+})();
+
+function jobsTool(JOBS) {
   var $ = function (id) { return document.getElementById(id); };
   var list = $('jlist');
-  if (!list) return;
   var PAGE = 20, shown = PAGE, sort = 'new';
   var fill = function (sel, values) { values.forEach(function (v) { var o = document.createElement('option'); o.value = o.textContent = v; sel.appendChild(o); }); };
   var tally = function (key) { var m = {}; JOBS.forEach(function (j) { [].concat(j[key]).forEach(function (v) { if (v) m[v] = (m[v] || 0) + 1; }); }); return m; };
@@ -292,4 +310,4 @@ var jobLink = function (j) {
   });
   $('jmore').addEventListener('click', function () { shown += PAGE; render(); });
   render();
-})();
+}
