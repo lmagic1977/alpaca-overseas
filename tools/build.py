@@ -2,6 +2,7 @@
 # 用法：python3 tools/build.py [lucide-static 的 icons 目录]
 # 图标会缓存到 tools/icons.json，之后没有 lucide 目录也能重新生成。
 import json, os, re, shutil, sys
+from html import escape
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'site')
@@ -394,8 +395,68 @@ index_body = f'''{carousel()}
 {cta()}'''
 
 # ---------------- 美国 ----------------
-us_body = f'''{banner('us-gg', '美国移民签证', '美国移民签证', '短期签证还是长期绿卡，先评估，再挑最快最稳的路。', ['B1/B2', 'F-1', 'H-1B', 'L-1', 'O-1', 'EB-1A', 'NIW', 'EB-5'],
-              f'<div class="acts">{btn(consult("美国移民签证"), "免费评估", "sun", "messages-square")}{btn("#to-us", "墨西哥转美签", "glass", "plane-takeoff")}</div>')}
+def h2b_jobs():
+    with open(os.path.join(ROOT, 'src', 'h2b-jobs.json')) as feed:
+        snapshot = json.load(feed)
+    rows = []
+    for job in snapshot['jobs']:
+        low, high = job['wageFrom'], job['wageTo']
+        wage = f'${low:,.2f}' if low is not None else '见原公告'
+        if high is not None and low is not None and high > low:
+            wage += f'–${high:,.2f}'
+        if low is not None and job['wagePer']:
+            unit = {'Hour': '小时', 'Week': '周', 'Month': '月', 'Year': '年'}
+            wage += ' / ' + unit.get(job['wagePer'], job['wagePer'])
+        location = ', '.join(filter(None, [job['jobCity'], job['jobState']]))
+        dates = ' 至 '.join(filter(None, [job['tempneedStart'], job['tempneedEnd']]))
+        case = escape(job['caseNumber'])
+        title = escape(job['tempneedJobtitle'] or case)
+        title_zh = escape(job['titleZh'])
+        cells = [job['empBusinessName'], location, wage, dates, job['tempneedWkrPos']]
+        details = ''.join(f'<td>{escape(str(value)) if value else "—"}</td>' for value in cells)
+        rows.append(f'<tr><th scope="row"><a href="https://seasonaljobs.dol.gov/jobs/{case}">{title_zh}<br><span lang="en">{title}</span></a><br><small>{case}</small></th>{details}</tr>')
+    return f'''<details>
+      <summary>展开全部 {len(rows)} 条 H-2B 职位记录</summary>
+      <div style="overflow-x:auto" tabindex="0" role="region" aria-label="H-2B 职位表">
+        <table style="width:100%;text-align:left;border-spacing:12px">
+          <thead><tr><th scope="col">职位 / 案号</th><th scope="col">雇主</th><th scope="col">地点</th><th scope="col">工资（美元）</th><th scope="col">计划用工期</th><th scope="col">雇主申请名额</th></tr></thead>
+          <tbody>{''.join(rows)}</tbody>
+        </table>
+      </div>
+    </details>
+    <p>数据快照：{escape(snapshot['date'])}（美国太平洋时间）。数据覆盖美国劳工部最近 20 天发出受理通知的 H-2B 申请。招聘状态、申请方式、工作要求及实际用工安排请查看职位原公告。</p>'''
+
+
+h2b_section = f'''<section class="sec alt" id="h2b"><div class="wrap">
+  {head('美国短期工作', 'H-2B 临时非农业工作签证', '适用于园林维护、酒店度假村、海产品加工等临时非农业岗位。')}
+  {icards([
+      ('briefcase', '申请人条件', '先获得符合 H-2B 条件的美国雇主聘用。工作经验、语言、驾照和体力要求以各岗位公告为准。境外申请人通常在雇主申请获批后向美国领馆申请签证。'),
+      ('building-2', '雇主申请流程', '美国雇主证明有临时用工需求，按规定开展美国本地招聘并取得临时劳工认证，再向 USCIS 提交 I-129。名额及豁免以官方公告为准。'),
+      ('scale', '费用由谁承担', '求职者无需向雇主或招聘方支付招聘费、岗位费或雇主申请费。美国国务院列出的 H 类签证申请费为 205 美元。雇主须支付签证及相关费用，或在第一个工作周报销。护照等个人费用可由求职者承担。'),
+  ])}
+  <p><strong>羊驼出海服务报价：人民币 55,000 元，由申请人支付。</strong> 具体服务范围请在付款前书面确认。招聘、岗位安排和雇主申请费用不得向求职者收取。</p>
+  <div class="acts">{btn('#us-jobs', '查看美国职位', 'green')}{btn(consult('美国 H-2B 工签'), '咨询 H-2B', 'line')}</div>
+  <p><a href="https://flag.dol.gov/programs/h-2b">美国劳工部申请流程</a> · <a href="https://www.dol.gov/agencies/whd/fact-sheets/78f-h2b-fees">费用与报销规则</a> · <a href="https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/fees/fees-visa-services.html">美国国务院签证费</a></p>
+</div></section>
+
+<section class="sec" id="us-jobs"><div class="wrap">
+  {head('美国劳工部公开职位', '美国季节性工作', '职位名称中英文对照。点击职位查看原公告，并按公告提供的方式直接联系招聘方。')}
+  <h3>H-2B 非农业职位</h3>
+  {h2b_jobs()}
+  <h3>H-2A 农业职位</h3>
+  <article>
+    <h4>奶牛场工人 <span lang="en">/ Farmworker</span> · BGR Dairy LLP</h4>
+    <p>Lake Park, Minnesota · 公告主栏时薪 $19.33 · 2026-12-15 至 2027-05-15 · 计划招 4 人，每周 40 小时。</p>
+    <p>照料牛群、检查水槽并用皮卡运水。要求至少 1 个月农场经验、普通驾照，可搬运 50 磅（约 23 公斤）。工资细则和申请联系方式请查看原公告。</p>
+    <p><a href="https://seasonaljobs.dol.gov/jobs/H-300-25305-355113">查看官方职位与申请方式 · H-300-25305-355113</a></p>
+  </article>
+</div></section>
+'''
+
+us_body = f'''{banner('us-gg', '美国移民签证', '美国移民签证', '短期签证还是长期绿卡，先评估，再挑最快最稳的路。', ['B1/B2', 'F-1', 'H-1B', 'H-2B', 'L-1', 'O-1', 'EB-1A', 'NIW', 'EB-5'],
+              f'<div class="acts">{btn(consult("美国移民签证"), "免费评估", "sun", "messages-square")}{btn("#h2b", "H-2B 工签与职位", "glass", "briefcase")}{btn("#to-us", "墨西哥转美签", "glass", "plane-takeoff")}</div>')}
+
+{h2b_section}
 
 {mx_to_us('sec tint mxus')}
 
@@ -721,7 +782,7 @@ contact_body = f'''{banner('airport2', '免费咨询', '免费咨询', '留个�
     <div class="fgrid">
       <label class="f" for="f-service">感兴趣的服务
         <select id="f-service" name="service">
-          <option>美国移民签证</option><option>新西兰工作签证</option><option>新加坡工作签证</option><option>墨西哥工签绿卡</option><option>还不确定，想听建议</option>
+          <option>美国移民签证</option><option>美国 H-2B 工签</option><option>新西兰工作签证</option><option>新加坡工作签证</option><option>墨西哥工签绿卡</option><option>还不确定，想听建议</option>
         </select>
       </label>
       <label class="f" for="f-when">计划出发时间
@@ -745,10 +806,10 @@ PAGES = [
      f'羊驼出海（LLAMA VISA）出国签证与移民服务：美国旅游、留学、工作签证与绿卡，新西兰工作签证，新加坡 EP、S Pass、WP 工作准证和 {N_JOBS} 个在招职位，墨西哥工签与永久居留。要出国找羊驼，免费评估。',
      index_body, ('jobs-data.js', 'app.js'),
      '羊驼出海,LLAMA VISA,出国签证,移民中介,出国工作,美国签证,美国移民,新西兰工签,新加坡工签,新加坡工作,墨西哥绿卡,墨西哥签美国', 'alpaca-sg', ()),
-    ('us', '/us', '美国签证与移民｜B1/B2、F-1、H-1B、NIW、EB-5 绿卡办理',
-     '美国旅游签证 B1/B2、留学 F-1、工作签证 H-1B、L-1、O-1，以及 EB-1A、NIW、EB-5 绿卡规划。拒签复盘、材料准备、面签辅导，也可先拿墨西哥身份再申请美签。',
+    ('us', '/us', '美国签证与移民｜B1/B2、F-1、H-1B、H-2B、NIW、EB-5 绿卡办理',
+     '美国旅游签证 B1/B2、留学 F-1、工作签证 H-1B、H-2B、L-1、O-1，以及 EB-1A、NIW、EB-5 绿卡规划。拒签复盘、材料准备、面签辅导，也可先拿墨西哥身份再申请美签。',
      us_body, ('app.js',),
-     '美国签证,美国移民,美签,美国旅游签证,B1/B2,F-1留学签证,H-1B,L-1,O-1,EB-1A,NIW,EB-5,美国绿卡,美签拒签,墨西哥签美国', 'us-gg',
+     '美国签证,美国移民,美签,美国旅游签证,B1/B2,F-1留学签证,H-1B,H-2B,L-1,O-1,EB-1A,NIW,EB-5,美国绿卡,美签拒签,墨西哥签美国', 'us-gg',
      (service_ld('美国签证与移民', '美国旅游、留学、工作签证与 EB-1A、NIW、EB-5 绿卡规划。', '美国', ['美国签证', '美国移民', '美国绿卡']),)),
     ('nz', '/nz', '新西兰工作签证｜AEWV 认证雇主工签、新西兰工作项目',
      '新西兰工作签证 AEWV 办理：中专以上学历、2 年以上工作经验、PTE 29 分即可报名，多行业岗位匹配，持牌移民律师服务，做满条件可衔接新西兰居留。',
