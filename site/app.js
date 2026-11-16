@@ -12,6 +12,25 @@ var jobLink = function (j) {
   return '/contact?service=' + encodeURIComponent('新加坡工作签证') + '&msg=' + encodeURIComponent('【咨询职位 ' + j.id + '】' + j.t + (j.co ? '（' + j.co + '）' : '') + '，' + (j.pay || '') + '。');
 };
 
+// 澳洲和新西兰岗位行业筛选
+document.querySelectorAll('[data-country-jobs]').forEach(function (section) {
+  var filter = section.querySelector('[data-industry-filter]');
+  var count = section.querySelector('[data-industry-count]');
+  var cards = section.querySelectorAll('[data-industry]');
+  function update() {
+    var visible = 0;
+    cards.forEach(function (card) {
+      card.hidden = filter.value !== '' && card.dataset.industry !== filter.value;
+      if (!card.hidden) visible++;
+    });
+    count.textContent = '显示 ' + visible + ' 个岗位';
+  }
+  filter.addEventListener('change', update);
+  window.addEventListener('pageshow', update);
+  update();
+  section.querySelector('[data-industry-controls]').hidden = false;
+});
+
 // 手机菜单
 (function () {
   var btn = document.getElementById('menu-btn'), nav = document.getElementById('main-nav');

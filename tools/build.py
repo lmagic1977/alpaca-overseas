@@ -2,6 +2,7 @@
 # 用法：python3 tools/build.py [lucide-static 的 icons 目录]
 # 图标会缓存到 tools/icons.json，之后没有 lucide 目录也能重新生成。
 import json, os, re, shutil, sys
+from urllib.parse import quote
 from html import escape
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,7 +13,7 @@ icons = json.load(open(ICON_CACHE)) if os.path.exists(ICON_CACHE) else {}
 JOBS = json.loads(open(os.path.join(ROOT, 'src', 'jobs-data.js')).read().split('=', 1)[1].strip().rstrip(';'))
 N_JOBS = len(JOBS)
 JOBS_UPDATED = max(j['d'] for j in JOBS)
-SITE = 'https://visas.run'
+SITE = 'https://51.run'
 BUILD_DATE = __import__('datetime').date.today().isoformat()
 
 
@@ -44,8 +45,8 @@ def img(name, alt='', big=False, eager=False):
     return f'<div class="ph"><img {src} alt="{alt}" {attrs} decoding="async"></div>'
 
 
-TOP = [('/us', '美国'), ('/nz', '新西兰'), ('/sg', '新加坡'), ('/mx', '墨西哥')]  # 顶部菜单只放四个国家
-NAV = [('/', '首页'), ('/us', '美国移民签证'), ('/nz', '新西兰工签'), ('/sg', '新加坡工签'),
+TOP = [('/us', '美国'), ('/au', '澳洲'), ('/nz', '新西兰'), ('/sg', '新加坡'), ('/mx', '墨西哥')]  # 顶部菜单只放国家
+NAV = [('/', '首页'), ('/us', '美国移民签证'), ('/au', '澳洲工作'), ('/nz', '新西兰工签'), ('/sg', '新加坡工签'),
        ('/jobs', '新加坡职位'), ('/mx', '墨西哥工签绿卡'), ('/blog', '出海攻略'), ('/about', '关于我们')]
 
 
@@ -214,7 +215,7 @@ def mx_to_us(cls='sec mxus', link=True):
 
 
 SLIDES = [
-    ('alpaca-sg', '羊驼出海 · LLAMA VISA', '要出国<em>找羊驼</em>', '美国、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
+    ('alpaca-sg', '羊驼出海 · LLAMA VISA', '要出国<em>找羊驼</em>', '美国、澳洲、新西兰、新加坡、墨西哥。签证、工作、身份，一站帮你办好。',
      btn('/contact', '免费咨询', 'sun', 'messages-square') + btn('#services', '看看能去哪', 'glass')),
     ('us-nyc', '美国移民签证', '去美国，<em>签证绿卡</em>一起规划', '旅游、留学、H-1B、NIW、EB-5，先评估，再挑最稳的那条路。',
      btn('/us', '了解美国', 'sun') + btn(consult('美国移民签证'), '问问顾问', 'glass', 'messages-square')),
@@ -247,6 +248,7 @@ def carousel():
 
 SERVICES = [
     ('/us', 'us-gg', '美国', '美国移民签证', ['B1/B2', 'F-1', 'H-1B', 'NIW', 'EB-5']),
+    ('/au', 'airport', '澳洲', '澳洲工作岗位', ['餐饮', '建筑技工', '运输']),
     ('/nz', 'nz-hills', '新西兰', '新西兰工作签证', ['AEWV', '绿名单', '技术移民']),
     ('/sg', 'sg-bay', '新加坡', '新加坡工作签证', ['EP', 'S Pass', 'WP', '在线职位']),
     ('/mx', 'mx-gto', '墨西哥', '墨西哥工签绿卡', ['工作居留', '永久居留']),
@@ -349,7 +351,7 @@ index_body = f'''{carousel()}
 </div></div></section>
 
 <section class="sec" id="services"><div class="wrap">
-  {head('我们能帮你去哪', '四个国家，挑一个出发', '', btn('/contact', '不知道选哪个？问问我们', 'line', 'messages-square'))}
+  {head('我们能帮你去哪', '五个国家，挑一个出发', '', btn('/contact', '不知道选哪个？问问我们', 'line', 'messages-square'))}
   <div class="svc-grid">
   {''.join(f"""<a class="svc-card" href="{h}">{img(pic, n)}<span class="flag">{f}</span><div class="body"><h3>{n}{ic('arrow-right')}</h3><div class="chips">{''.join(f'<span>{c}</span>' for c in cs)}</div></div></a>""" for h, pic, f, n, cs in SERVICES)}
   </div>
@@ -497,6 +499,66 @@ us_body = f'''{banner('us-gg', '美国移民签证', '美国移民签证', '短�
 
 {cta('us-nyc', '想去美国？先免费评估', '告诉我们你的学历、工作和目标，顾问帮你挑路径。', consult('美国移民签证'))}'''
 
+# ---------------- 澳洲、新西兰岗位（行业筛选由 src/app.js 处理）----------------
+JOBS_NOTE = '根据 2026 年 11 月招聘资料整理。岗位是否仍开放，以及工作地点、用工条件、薪资、工时和签证资格，请在申请前确认。'
+
+
+def country_jobs(code, country, service, jobs, note=JOBS_NOTE):
+    opts = ''.join(f'<option>{i}</option>' for i in sorted({j[0] for j in jobs}))
+    cards = ''.join(
+        f'<article class="icard" data-industry="{ind}"><span class="code">{ind}</span><h3>{t}</h3><p><strong>{pay}</strong></p><p>{d}</p>'
+        f'<div class="acts"><a class="btn green" href="/contact?service={quote(service)}&amp;msg={quote(f"我想咨询{country}岗位：{t}")}">咨询{t}{ic("messages-square")}</a></div></article>'
+        for ind, t, pay, d in jobs)
+    return f'''<section class="sec alt" id="{code}-jobs" data-country-jobs><div class="wrap">
+  {head('招聘岗位', f'{country}工作岗位 · {len(jobs)} 个', note)}
+  <div class="country-jobs-filter" data-industry-controls hidden>
+    <label class="f" for="{code}-jobs-industry">按行业筛选
+      <select id="{code}-jobs-industry" data-industry-filter><option value="">全部行业</option>{opts}</select>
+    </label>
+    <p role="status" data-industry-count>显示 {len(jobs)} 个岗位</p>
+  </div>
+  <div class="icards">{cards}</div>
+  <div class="acts">{btn(consult(service), f'咨询{country}岗位', 'green', 'messages-square')}</div>
+</div></section>'''
+
+
+# (行业, 岗位, 薪资, 要求)
+AU_JOBS = [
+    ('餐饮', '餐厅经理', '年薪 A$79,000 起', '至少 3 年酒店或餐厅管理经验，负责前场团队、排班和培训，需能用英语流利沟通。'),
+    ('餐饮', '饺子制作工', '税前年薪 A$70,000–75,000，提供工作餐', '至少 3 年中式饺子制作经验，会调馅和包制多种饺子，熟悉和面机和压面机者优先。'),
+    ('建筑技工', '瓷砖铺贴工', '年薪 A$79,000 起', '至少 5 年瓷砖铺贴经验，可独立完成铺贴并熟练使用切割机等工具。'),
+    ('建筑技工', '石材工', '薪资待确认', '至少 3 年石材开料、加工及安装经验，可独立完成切割、打磨和安装。'),
+    ('汽车维修', '汽车贴膜工', '年薪 A$80,000 起', '至少 3 年汽车贴膜经验，可独立施工隐形车衣、改色膜及车窗膜。'),
+    ('美容与健康', '医美销售经理', '年薪 A$80,000 加提成', '至少 3 年医美机构销售经验，需能用英语流利沟通。有线下推广或新媒体运营经验优先。'),
+    ('建筑技工', '人造草坪安装工', '参考年薪 A$70,000–80,000', '熟悉人造草坪及橡胶地面施工，有 3 年相关铺设经验者优先。'),
+    ('汽车维修', '汽车钣金喷漆工', '年薪 A$80,000 起', '至少 3 年大型车行钣金喷漆经验，能完成事故车辆修复及漆面施工。'),
+    ('运输', '货车司机', '年薪 A$78,000，另加养老金', '至少 5 年货车安全驾驶经验，招聘资料要求国内 C 证满 3 年及职业评估。'),
+    ('美容与健康', '中式推拿师', '参考周薪 A$1,500–2,000', '具备 3–5 年中式推拿按摩经验。收入提成与养老金安排需向雇主确认。'),
+    ('建筑技工', '建筑木工（框架）', '税前年薪 A$76,000 起', '至少 3 年相关经验，能看懂建筑施工图并放线。'),
+    ('制造与加工', '钢结构焊工', '参考年薪 A$85,000–105,000', '至少 3 年实操经验，熟悉二保焊、手把焊和钢结构构件焊接。原资料列每周工作 60 小时起，工时和加班待遇需确认。'),
+]
+NZ_JOBS = [
+    ('建筑技工', '电工方向安装工', '时薪 NZ$25 起', '有 5–8 年电工经验，能独立安装监控、电箱、灯具和插座。有建筑电工经验者优先。'),
+    ('汽车维修', '汽车喷漆工', '时薪 NZ$28–30', '至少 3 年汽车喷漆经验，可独立完成底漆、中涂和面漆。'),
+    ('餐饮', '烘焙师', '薪资待确认', '至少 3 年烘焙或面包制作经验，能独立打面、整形及烘烤。'),
+    ('餐饮', '东北菜厨师', '税后周薪 NZ$950–1,000 起，提供工作餐', '至少 5 年东北菜烹饪经验，熟悉锅包肉、地三鲜等菜品。'),
+    ('餐饮', '拉面师', '税后周薪 NZ$1,000 起，提供工作餐', '至少 5 年拉面店经验，能独立和面、醒面及拉制多种规格面条。'),
+    ('餐饮', '烧烤师', '税后周薪 NZ$1,000 起，提供工作餐', '至少 5 年中式烧烤店经验，熟练进行炭火烧烤和食材处理。'),
+    ('餐饮', '小炒厨师', '税后周薪 NZ$1,000 起，提供工作餐', '至少 5 年厨房经验，熟悉炒锅、切配和川菜、湘菜、鲁菜或家常菜。'),
+    ('建筑技工', '油漆工', '时薪 NZ$25 起', '至少 2 年油漆施工经验，熟悉刷涂、喷涂和滚涂。'),
+    ('建筑技工', '微型挖掘机操作员', '时薪 NZ$25–30', '至少 5 年挖掘机驾驶经验，熟练操作反手微挖，能完成开挖、装卸和平整。'),
+    ('建筑技工', '屋顶或铝合金焊接安装工', '时薪 NZ$28 起', '具备 3–5 年屋顶或铝合金焊接和安装经验，招聘资料要求持焊工证。'),
+    ('制造与加工', '钢结构二保焊工', '时薪 NZ$28 起', '具备 3–5 年钢结构二保焊经验，能按图完成钢梁、钢柱等构件焊接。'),
+    ('制造与加工', '钢筋加工设备操作员', '时薪 NZ$26–29', '操作钢筋切割、调直及弯曲设备，能按图下料并进行尺寸和质量检查。'),
+    ('建筑技工', '水管工', '时薪 NZ$25–30', '至少 5 年室内外水管施工经验，会看图纸并熟悉管道系统与常用工具。'),
+    ('酒店与清洁', '客房清洁员', '时薪 NZ$24 起', '至少 2 年商业客房清洁经验，能完成退房后的整套清洁。'),
+]
+
+# ---------------- 澳洲 ----------------
+au_body = f'''{banner('airport', '澳洲工作', '澳洲工作岗位', '查看餐饮、建筑技工、汽车维修、运输等岗位的经验要求和参考薪资。', ['餐饮', '建筑技工', '汽车维修', '运输'],
+              f'<div class="acts">{btn("#au-jobs", "查看岗位", "sun", "briefcase")}</div>')}
+{country_jobs('au', '澳洲', '澳洲工作', AU_JOBS)}'''
+
 # ---------------- 新西兰 ----------------
 NZ_REQ = [
     ('graduation-cap', '学历', '中专及以上', '中专、大专、本科等学历均可报名。'),
@@ -516,7 +578,9 @@ NZ_STEPS = [
 NZ_PAY = [('报名', 'pen-line', '¥10,000'), ('面试通过并确认雇佣合同后', 'file-check', '¥40,000'), ('签证获批后', 'stamp', '¥20,000')]
 
 nz_body = f'''{banner('nz-lake', '新西兰工作签证', '新西兰工作项目开放报名', '有技术、有工作经验，想去新西兰工作？不限厨师，多行业岗位可咨询。', ['AEWV', '多行业岗位', '持牌律师服务'],
-              f'<div class="acts">{btn(consult("新西兰工作签证"), "免费评估", "sun", "messages-square")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
+              f'<div class="acts">{btn(consult("新西兰工作签证"), "免费评估", "sun", "messages-square")}{btn("#nz-jobs", "查看岗位", "glass", "briefcase")}{btn("#fee", "看费用", "glass", "wallet")}</div>')}
+
+{country_jobs('nz', '新西兰', '新西兰工作签证', NZ_JOBS)}
 
 <section class="sec" id="job"><div class="wrap">
   {head('申请条件', '这四项都要满足', '具体技能、英语和资质要求因岗位而异，根据你的经历与雇主实际需求匹配。')}
@@ -736,7 +800,7 @@ FAQ = [
 about_body = f'''{banner('meeting', '关于我们', '关于羊驼出海', '羊驼走山路不着急，每一步都踩稳了再走。我们也这样陪你出海。')}
 
 <section class="sec"><div class="wrap">
-  {split('meeting2', '顾问和客户沟通', '我们是谁', '不忽悠，不画饼，一步一步办踏实', '专注美国、新西兰、新加坡、墨西哥四国身份规划。一份材料写偏了，可能就是一次拒签、几个月等待，所以我们宁可在评估时把风险讲在前面。',
+  {split('meeting2', '顾问和客户沟通', '我们是谁', '不忽悠，不画饼，一步一步办踏实', '专注美国、澳洲、新西兰、新加坡、墨西哥五国身份规划。一份材料写偏了，可能就是一次拒签、几个月等待，所以我们宁可在评估时把风险讲在前面。',
          ['四个国家，熟悉各自的审理思路', '清楚哪些承诺不能做', '从评估到获批，同一个顾问负责'])}
 </div></section>
 
@@ -782,7 +846,7 @@ contact_body = f'''{banner('airport2', '免费咨询', '免费咨询', '留个�
     <div class="fgrid">
       <label class="f" for="f-service">感兴趣的服务
         <select id="f-service" name="service">
-          <option>美国移民签证</option><option>美国 H-2B 工签</option><option>新西兰工作签证</option><option>新加坡工作签证</option><option>墨西哥工签绿卡</option><option>还不确定，想听建议</option>
+          <option>美国移民签证</option><option>美国 H-2B 工签</option><option>澳洲工作</option><option>新西兰工作签证</option><option>新加坡工作签证</option><option>墨西哥工签绿卡</option><option>还不确定，想听建议</option>
         </select>
       </label>
       <label class="f" for="f-when">计划出发时间
@@ -811,6 +875,9 @@ PAGES = [
      us_body, ('app.js',),
      '美国签证,美国移民,美签,美国旅游签证,B1/B2,F-1留学签证,H-1B,H-2B,L-1,O-1,EB-1A,NIW,EB-5,美国绿卡,美签拒签,墨西哥签美国', 'us-gg',
      (service_ld('美国签证与移民', '美国旅游、留学、工作签证与 EB-1A、NIW、EB-5 绿卡规划。', '美国', ['美国签证', '美国移民', '美国绿卡']),)),
+    ('au', '/au', '澳洲工作岗位｜餐饮、建筑技工、汽车维修及运输',
+     '查看澳洲招聘资料中的岗位、参考薪资和经验要求，咨询岗位状态与雇主申请条件。',
+     au_body, ('app.js',), '澳洲工作,澳大利亚招聘,澳洲打工', 'airport', ()),
     ('nz', '/nz', '新西兰工作签证｜AEWV 认证雇主工签、新西兰工作项目',
      '新西兰工作签证 AEWV 办理：中专以上学历、2 年以上工作经验、PTE 29 分即可报名，多行业岗位匹配，持牌移民律师服务，做满条件可衔接新西兰居留。',
      nz_body, ('app.js',),
@@ -831,7 +898,7 @@ PAGES = [
      '墨西哥工签,墨西哥绿卡,墨西哥移民,墨西哥工作签证,墨西哥临时居留,墨西哥永久居留,墨西哥居留卡,墨西哥签美国,墨西哥美签', 'mx-gto',
      (service_ld('墨西哥工签绿卡', '墨西哥工作临时居留、续签、永久居留办理，以及持墨西哥居留身份申请美签的规划。', '墨西哥', ['墨西哥工作签证', '墨西哥永久居留']),)),
     ('about', '/about', '关于我们｜出国签证与移民顾问',
-     '羊驼出海专注美国、新西兰、新加坡、墨西哥四国签证与身份规划，先评估风险再办理，不忽悠不画饼。常见问题：免费评估准备什么、美签被拒还能不能再申请等。',
+     '羊驼出海专注美国、澳洲、新西兰、新加坡、墨西哥五国签证与身份规划，先评估风险再办理，不忽悠不画饼。常见问题：免费评估准备什么、美签被拒还能不能再申请等。',
      about_body, ('app.js',), '羊驼出海,LLAMA VISA,签证中介,移民顾问,出国咨询,美签拒签', 'meeting', (FAQ_LD,)),
     ('blog', '/blog', '出海攻略｜美国签证、新加坡工签、新西兰工签、墨西哥移民经验',
      '羊驼出海的出海攻略：美签面签和拒签再申请、新加坡 EP/S Pass/WP 怎么选、新西兰 AEWV 工签条件、先拿墨西哥身份再签美国，用大白话讲清楚。',

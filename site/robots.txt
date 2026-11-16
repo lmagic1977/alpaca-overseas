@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://visas.run/sitemap.xml
+Sitemap: https://51.run/sitemap.xml

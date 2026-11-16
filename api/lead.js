@@ -1,6 +1,6 @@
 // 接收官网"预约私人顾问"表单。目前写入 Vercel 运行日志，接入邮箱或企业微信后在这里转发。
 // 防滥用：只收本站发来的 JSON；隐藏字段和填写时间挡机器人；同一 IP 10 分钟最多 5 次（单实例内存计数，尽力而为）。
-const ALLOWED_HOSTS = ['visas.run', 'www.visas.run', 'alpaca-overseas.vercel.app'];
+const ALLOWED_HOSTS = ['51.run', 'visas.run', 'www.visas.run', 'alpaca-overseas.vercel.app'];
 const WINDOW_MS = 10 * 60 * 1000, MAX_PER_WINDOW = 5;
 const hits = new Map();
 

@@ -249,6 +249,17 @@ textarea { min-height: 110px; resize: vertical; }
 @media (max-width: 860px) { .sgc-grid { grid-template-columns: 1fr; } .sgc-out { position: static; } .fgrid { grid-template-columns: 1fr; } }
 
 /* 职位查询 */
+.country-jobs-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px 20px;
+  margin-bottom: 18px;
+}
+.country-jobs-filter .f { min-width: min(220px, 100%); }
+.country-jobs-filter [role="status"] { margin: 0 0 10px; color: var(--muted); }
+[data-country-jobs] .icard .acts { margin-top: 4px; }
+
 .jobs-bar { background: #fff; border-radius: var(--r); padding: 20px; display: grid; grid-template-columns: minmax(0, 2fr) repeat(5, minmax(0, 1fr)); gap: 12px; box-shadow: var(--shadow); }
 .jobs-bar label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); min-width: 0; }
 @media (max-width: 1080px) { .jobs-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); } .jobs-bar .q { grid-column: 1 / -1; } }
