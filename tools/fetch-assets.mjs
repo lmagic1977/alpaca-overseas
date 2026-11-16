@@ -24,7 +24,7 @@ async function get(url, tries = 3) {
 let failed = 0;
 await Promise.all(Object.entries(images).map(async ([name, id]) => {
   for (const [suffix, w] of [['', 1800], ['-s', 800]]) {
-    const url = `https://images.unsplash.com/photo-${id}?w=${w}&q=72&fm=jpg&fit=crop`;
+    const url = `https://images.unsplash.com/photo-${id}?w=${w}&q=62&fm=jpg&fit=crop`;
     try {
       const buf = await get(url);
       await writeFile(new URL(`img/${name}${suffix}.jpg`, out), buf);
