@@ -436,7 +436,7 @@ h2b_section = f'''<section class="sec alt" id="h2b"><div class="wrap">
       ('building-2', '雇主申请流程', '美国雇主证明有临时用工需求，按规定开展美国本地招聘并取得临时劳工认证，再向 USCIS 提交 I-129。名额及豁免以官方公告为准。'),
       ('scale', '费用由谁承担', '求职者无需向雇主或招聘方支付招聘费、岗位费或雇主申请费。美国国务院列出的 H 类签证申请费为 205 美元。雇主须支付签证及相关费用，或在第一个工作周报销。护照等个人费用可由求职者承担。'),
   ])}
-  <p><strong>羊驼出海服务报价：人民币 55,000 元，由申请人支付。</strong> 具体服务范围请在付款前书面确认。招聘、岗位安排和雇主申请费用不得向求职者收取。</p>
+  <p><strong>羊驼出海服务报价：人民币 88,000 元，由申请人支付。</strong> 具体服务范围请在付款前书面确认。招聘、岗位安排和雇主申请费用不得向求职者收取。</p>
   <div class="acts">{btn('#us-jobs', '查看美国职位', 'green')}{btn(consult('美国 H-2B 工签'), '咨询 H-2B', 'line')}</div>
   <p><a href="https://flag.dol.gov/programs/h-2b">美国劳工部申请流程</a> · <a href="https://www.dol.gov/agencies/whd/fact-sheets/78f-h2b-fees">费用与报销规则</a> · <a href="https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/fees/fees-visa-services.html">美国国务院签证费</a></p>
 </div></section>
